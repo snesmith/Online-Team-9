@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="C:/Users/Steven/Documents/Project3-FourRowSolitaire/FourRowSolitaire/sounds"/>
+	<classpathentry kind="lib" path="C:/Users/Steven/Documents/Project3-FourRowSolitaire/FourRowSolitaire/src"/>
+	<classpathentry kind="lib" path="C:/Users/Steven/Documents/Java projects/FourRowSolitaire/images"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
