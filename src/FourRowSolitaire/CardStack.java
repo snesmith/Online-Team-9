@@ -201,11 +201,17 @@ public class CardStack extends JLayeredPane {
 	}
 
 	public boolean isValidMove(Card card) {
+		if (isEmpty() && card.getNumber() == Card.KING) {
+			return true;
+		} else if (!isEmpty() && card.getColor() != peek().getColor() && card.getNumber() == (peek().getNumber() - 1)) {
+			return true;
+		}
+
 		return false;
 	}
 
 	public boolean isValidMove(CardStack stack) {
-		return false;
+		return isValidMove(stack.peek());
 	}
 
 	public Card getBottom() {
