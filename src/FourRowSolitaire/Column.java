@@ -46,7 +46,7 @@ public class Column extends CardStack {
 		if (isEmpty() && card.getNumber() == Card.KING) {
 			return true;
 		} else if (!isEmpty() && card.getColor() != peek().getColor() && card.getNumber() == (peek().getNumber() - 1)) {
-			return false;
+			return true;
 		}
 
 		return false;
