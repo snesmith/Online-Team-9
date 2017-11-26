@@ -30,38 +30,32 @@ import javax.swing.*;
  *
  * @author Matt Stephen
  */
-public class SolitairePanel extends JPanel
-{
-    private int backgroundNumber = 2;
-    private Image background;
+public class SolitairePanel extends JPanel {
+	private int backgroundNumber = 2;
+	private Image background;
 
-    public SolitairePanel()
-    {
-        URL imageURL = this.getClass().getResource("images/backgrounds/background" + backgroundNumber + ".jpg");
+	public SolitairePanel() {
+		URL imageURL = this.getClass().getResource("images/backgrounds/background" + backgroundNumber + ".jpg");
 
-        if (imageURL != null)
-        {
-            background = new ImageIcon(imageURL).getImage();
-        }
-    }
+		if (imageURL != null) {
+			background = new ImageIcon(imageURL).getImage();
+		}
+	}
 
-    public void changeBackground(int back)
-    {
-        backgroundNumber = back;
-        
-        URL imageURL = this.getClass().getResource("images/backgrounds/background" + back + ".jpg");
+	public void changeBackground(int back) {
+		backgroundNumber = back;
 
-        if (imageURL != null)
-        {
-            background = new ImageIcon(imageURL).getImage();
-        }
+		URL imageURL = this.getClass().getResource("images/backgrounds/background" + back + ".jpg");
 
-        repaint();
-    }
+		if (imageURL != null) {
+			background = new ImageIcon(imageURL).getImage();
+		}
 
-    protected void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        g.drawImage(background,0,0,null);
-    }
+		repaint();
+	}
+
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(background, 0, 0, null);
+	}
 }

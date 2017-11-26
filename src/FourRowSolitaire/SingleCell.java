@@ -24,42 +24,37 @@ import java.awt.Point;
 /**
  * Class: SingleCell
  *
- * Description: The SingleCell class manages an individual cell that can only hold one card.
+ * Description: The SingleCell class manages an individual cell that can only
+ * hold one card.
  *
  * @author Matt Stephen
  */
-public class SingleCell extends CardStack
-{
-    public SingleCell() {}
+public class SingleCell extends CardStack {
+	public SingleCell() {
+	}
 
-    public Card push(Card card)
-    {
-        if(isEmpty())
-        {
-            super.push(card);
-            return card;
-        }
+	public Card push(Card card) {
+		if (isEmpty()) {
+			super.push(card);
+			return card;
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public Card getCardAtLocation(Point p)
-    {
-        return peek();
-    }
+	public Card getCardAtLocation(Point p) {
+		return peek();
+	}
 
-    public boolean isValidMove(Card card)
-    {
-        if(isEmpty())
-        {
-            return true;
-        }
+	public boolean isValidMove(Card card) {
+		if (isEmpty()) {
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    public boolean isValidMove(CardStack stack)
-    {
-        return false;
-    }
+	public boolean isValidMove(CardStack stack) {
+		return false;
+	}
 }

@@ -26,197 +26,171 @@ import javax.swing.*;
 /**
  * Class: ChangeAppearance
  * 
- * Description: The ChangeAppearance class manages the ability to change the background or card backs.
+ * Description: The ChangeAppearance class manages the ability to change the
+ * background or card backs.
  * 
  * @author Matt Stephen
  */
-public class ChangeAppearance extends JDialog implements ActionListener
-{
-    public static final int NUM_DECKS = 3;
-    public static final int NUM_BACKGROUNDS = 3;
+public class ChangeAppearance extends JDialog implements ActionListener {
+	public static final int NUM_DECKS = 3;
+	public static final int NUM_BACKGROUNDS = 3;
 
-    public static final int FRS_DECK = 3;
-    public static final int FRS_BACKGROUND = 2;
+	public static final int FRS_DECK = 3;
+	public static final int FRS_BACKGROUND = 2;
 
-    private JRadioButton[] decks = new JRadioButton[NUM_DECKS];
+	private JRadioButton[] decks = new JRadioButton[NUM_DECKS];
 
-    private JRadioButton[] backgrounds = new JRadioButton[NUM_BACKGROUNDS];
+	private JRadioButton[] backgrounds = new JRadioButton[NUM_BACKGROUNDS];
 
-    private JButton ok = new JButton("Choose This Setup");
+	private JButton ok = new JButton("Choose This Setup");
 
-    public int deckNumber = 3;
-    public int backgroundNumber = 2;
+	public int deckNumber = 3;
+	public int backgroundNumber = 2;
 
-    private boolean exited = true;
+	private boolean exited = true;
 
-    //To hold the image previews
-    private JLabel cardBackLabel = new JLabel();
-    private JLabel backgroundLabel = new JLabel();
-    
-    public ChangeAppearance(JFrame parent, int deckNumber, int backgroundNumber)
-    {
-        setTitle("Change Appearance");
-        setSize(400,300);
-        setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
-        setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
-        setLocationRelativeTo(parent);
+	// To hold the image previews
+	private JLabel cardBackLabel = new JLabel();
+	private JLabel backgroundLabel = new JLabel();
 
-        this.deckNumber = deckNumber;
-        this.backgroundNumber = backgroundNumber;
-        setup();
+	public ChangeAppearance(JFrame parent, int deckNumber, int backgroundNumber) {
+		setTitle("Change Appearance");
+		setSize(400, 300);
+		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+		setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
+		setLocationRelativeTo(parent);
 
-        setVisible(true);
-    }
+		this.deckNumber = deckNumber;
+		this.backgroundNumber = backgroundNumber;
+		setup();
 
-    private void setup()
-    {
-        //Card backs
-        JPanel cardBackPanel = new JPanel();
-        cardBackPanel.setLayout(new FlowLayout());
+		setVisible(true);
+	}
 
-        ButtonGroup cardBacks = new ButtonGroup();
+	private void setup() {
+		// Card backs
+		JPanel cardBackPanel = new JPanel();
+		cardBackPanel.setLayout(new FlowLayout());
 
-        for(int i = 0; i < NUM_DECKS; i++)
-        {
-            decks[i] = new JRadioButton("Deck " + (i + 1));
-            cardBacks.add(decks[i]);
-            cardBackPanel.add(decks[i]);
-            decks[i].addActionListener(this);
-        }
+		ButtonGroup cardBacks = new ButtonGroup();
 
-        if(deckNumber <= decks.length)
-        {
-            decks[deckNumber - 1].setSelected(true);
-        }
-        else
-        {
-            decks[2].setSelected(true);
-        }
+		for (int i = 0; i < NUM_DECKS; i++) {
+			decks[i] = new JRadioButton("Deck " + (i + 1));
+			cardBacks.add(decks[i]);
+			cardBackPanel.add(decks[i]);
+			decks[i].addActionListener(this);
+		}
 
-        //Backgrounds
-        JPanel backgroundPanel = new JPanel();
-        backgroundPanel.setLayout(new FlowLayout());
+		if (deckNumber <= decks.length) {
+			decks[deckNumber - 1].setSelected(true);
+		} else {
+			decks[2].setSelected(true);
+		}
 
-        ButtonGroup backgroundsBG = new ButtonGroup();
+		// Backgrounds
+		JPanel backgroundPanel = new JPanel();
+		backgroundPanel.setLayout(new FlowLayout());
 
-        for(int i = 0; i < NUM_BACKGROUNDS; i++)
-        {
-            backgrounds[i] = new JRadioButton("Background " + (i + 1));
-            backgroundsBG.add(backgrounds[i]);
-            backgroundPanel.add(backgrounds[i]);
-            backgrounds[i].addActionListener(this);
-        }
+		ButtonGroup backgroundsBG = new ButtonGroup();
 
-        if(backgroundNumber <= NUM_BACKGROUNDS)
-        {
-            backgrounds[backgroundNumber - 1].setSelected(true);
-        }
-        else
-        {
-            backgrounds[0].setSelected(true);
-        }
+		for (int i = 0; i < NUM_BACKGROUNDS; i++) {
+			backgrounds[i] = new JRadioButton("Background " + (i + 1));
+			backgroundsBG.add(backgrounds[i]);
+			backgroundPanel.add(backgrounds[i]);
+			backgrounds[i].addActionListener(this);
+		}
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(ok);
+		if (backgroundNumber <= NUM_BACKGROUNDS) {
+			backgrounds[backgroundNumber - 1].setSelected(true);
+		} else {
+			backgrounds[0].setSelected(true);
+		}
 
-        cardBackLabel.setIcon(new ImageIcon(this.getClass().getResource
-                ("images/cardbacks/cardback" + deckNumber + ".png")));
-        JPanel cardBackViewer = new JPanel();
-        cardBackViewer.add(cardBackLabel);
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		buttonPanel.add(ok);
 
-        backgroundLabel.setIcon(new ImageIcon(this.getClass().getResource
-                ("images/backgrounds/background" + backgroundNumber + "small.jpg")));
-        JPanel backgroundViewer = new JPanel();
-        backgroundViewer.add(backgroundLabel);
+		cardBackLabel
+				.setIcon(new ImageIcon(this.getClass().getResource("images/cardbacks/cardback" + deckNumber + ".png")));
+		JPanel cardBackViewer = new JPanel();
+		cardBackViewer.add(cardBackLabel);
 
-        JPanel p2 = new JPanel();
-        p2.setLayout(new GridLayout(2, 2, 0, 0));
-        p2.add(cardBackPanel);
-        p2.add(backgroundPanel);
-        p2.add(cardBackViewer);
-        p2.add(backgroundViewer);
+		backgroundLabel.setIcon(new ImageIcon(
+				this.getClass().getResource("images/backgrounds/background" + backgroundNumber + "small.jpg")));
+		JPanel backgroundViewer = new JPanel();
+		backgroundViewer.add(backgroundLabel);
 
-        //Put everything together
-        JPanel p1 = new JPanel();
-        p1.setLayout(new BorderLayout());
+		JPanel p2 = new JPanel();
+		p2.setLayout(new GridLayout(2, 2, 0, 0));
+		p2.add(cardBackPanel);
+		p2.add(backgroundPanel);
+		p2.add(cardBackViewer);
+		p2.add(backgroundViewer);
 
-        JLabel note = new JLabel("Note: Deck changes will take effect on new game");
-        note.setHorizontalAlignment(JLabel.CENTER);
+		// Put everything together
+		JPanel p1 = new JPanel();
+		p1.setLayout(new BorderLayout());
 
-        p1.add(note, BorderLayout.NORTH);
-        p1.add(p2, BorderLayout.CENTER);
-        p1.add(buttonPanel, BorderLayout.SOUTH);
+		JLabel note = new JLabel("Note: Deck changes will take effect on new game");
+		note.setHorizontalAlignment(JLabel.CENTER);
 
-        add(p1);
+		p1.add(note, BorderLayout.NORTH);
+		p1.add(p2, BorderLayout.CENTER);
+		p1.add(buttonPanel, BorderLayout.SOUTH);
 
-        ok.addActionListener(this);
-    }
+		add(p1);
 
-    public int getDeckNumber()
-    {
-        if(!exited)
-        {
-            return deckNumber;
-        }
+		ok.addActionListener(this);
+	}
 
-        return -1;
-    }
+	public int getDeckNumber() {
+		if (!exited) {
+			return deckNumber;
+		}
 
-    public int getBackgroundNumber()
-    {
-        if(!exited)
-        {
-            return backgroundNumber;
-        }
+		return -1;
+	}
 
-        return -1;
-    }
+	public int getBackgroundNumber() {
+		if (!exited) {
+			return backgroundNumber;
+		}
 
-    public void actionPerformed(ActionEvent e)
-    {
-        if(e.getSource() == decks[0])
-        {
-            deckNumber = 1;
-            cardBackLabel.setIcon(new ImageIcon(this.getClass().getResource
-                    ("images/cardbacks/cardback" + deckNumber + ".png")));
-        }
-        else if(e.getSource() == decks[1])
-        {
-            deckNumber = 2;
-            cardBackLabel.setIcon(new ImageIcon(this.getClass().getResource
-                    ("images/cardbacks/cardback" + deckNumber + ".png")));
-        }
-        else if(e.getSource() == decks[2])
-        {
-            deckNumber = 3;
-            cardBackLabel.setIcon(new ImageIcon(this.getClass().getResource
-                    ("images/cardbacks/cardback" + deckNumber + ".png")));
-        }
+		return -1;
+	}
 
-        else if(e.getSource() == backgrounds[0])
-        {
-            backgroundNumber = 1;
-            backgroundLabel.setIcon(new ImageIcon(this.getClass().getResource
-                ("images/backgrounds/background" + backgroundNumber + "small.jpg")));
-        }
-        else if(e.getSource() == backgrounds[1])
-        {
-            backgroundNumber = 2;
-            backgroundLabel.setIcon(new ImageIcon(this.getClass().getResource
-                ("images/backgrounds/background" + backgroundNumber + "small.jpg")));
-        }
-        else if(e.getSource() == backgrounds[2])
-        {
-            backgroundNumber = 3;
-            backgroundLabel.setIcon(new ImageIcon(this.getClass().getResource
-                ("images/backgrounds/background" + backgroundNumber + "small.jpg")));
-        }
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == decks[0]) {
+			deckNumber = 1;
+			cardBackLabel.setIcon(
+					new ImageIcon(this.getClass().getResource("images/cardbacks/cardback" + deckNumber + ".png")));
+		} else if (e.getSource() == decks[1]) {
+			deckNumber = 2;
+			cardBackLabel.setIcon(
+					new ImageIcon(this.getClass().getResource("images/cardbacks/cardback" + deckNumber + ".png")));
+		} else if (e.getSource() == decks[2]) {
+			deckNumber = 3;
+			cardBackLabel.setIcon(
+					new ImageIcon(this.getClass().getResource("images/cardbacks/cardback" + deckNumber + ".png")));
+		}
 
-        else if(e.getSource() == ok)
-        {
-            exited = false;
-            setVisible(false);
-        }
-    }
+		else if (e.getSource() == backgrounds[0]) {
+			backgroundNumber = 1;
+			backgroundLabel.setIcon(new ImageIcon(
+					this.getClass().getResource("images/backgrounds/background" + backgroundNumber + "small.jpg")));
+		} else if (e.getSource() == backgrounds[1]) {
+			backgroundNumber = 2;
+			backgroundLabel.setIcon(new ImageIcon(
+					this.getClass().getResource("images/backgrounds/background" + backgroundNumber + "small.jpg")));
+		} else if (e.getSource() == backgrounds[2]) {
+			backgroundNumber = 3;
+			backgroundLabel.setIcon(new ImageIcon(
+					this.getClass().getResource("images/backgrounds/background" + backgroundNumber + "small.jpg")));
+		}
+
+		else if (e.getSource() == ok) {
+			exited = false;
+			setVisible(false);
+		}
+	}
 }

@@ -30,68 +30,53 @@ import java.awt.Point;
  *
  * @author Matt Stephen
  */
-public class AcePile extends CardStack
-{
-    private String suit;
+public class AcePile extends CardStack {
+	private String suit;
 
-    public AcePile(String suit)
-    {
-        this.suit = suit;
-    }
+	public AcePile(String suit) {
+		this.suit = suit;
+	}
 
-    public String getSuit()
-    {
-        return suit;
-    }
+	public String getSuit() {
+		return suit;
+	}
 
-    public Card push(Card card)
-    {
-        if(isEmpty() && card.getSuit().equals(suit) && card.getNumber() == Card.ACE)
-        {
-            super.push(card);
-            return card;
-        }
-        else if(card.getSuit().equals(suit) && card.getNumber() == peek().getNumber() + 1)
-        {
-            super.push(card);
-            return card;
-        }
+	public Card push(Card card) {
+		if (isEmpty() && card.getSuit().equals(suit) && card.getNumber() == Card.ACE) {
+			super.push(card);
+			return card;
+		} else if (card.getSuit().equals(suit) && card.getNumber() == peek().getNumber() + 1) {
+			super.push(card);
+			return card;
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public Card getCardAtLocation(Point p)
-    {
-        return peek();
-    }
+	public Card getCardAtLocation(Point p) {
+		return peek();
+	}
 
-    public boolean isValidMove(Card card)
-    {
-        if(isEmpty() && card.getSuit().equals(suit))
-        {
-            return true;
-        }
-        else if(!isEmpty() && card.getSuit().equals(suit) && card.getNumber() == (peek().getNumber() + 1))
-        {
-            return true;
-        }
+	public boolean isValidMove(Card card) {
+		if (isEmpty() && card.getSuit().equals(suit)) {
+			return true;
+		} else if (!isEmpty() && card.getSuit().equals(suit) && card.getNumber() == (peek().getNumber() + 1)) {
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    public boolean isValidMove(CardStack stack)
-    {
-        return false;
-    }
+	public boolean isValidMove(CardStack stack) {
+		return false;
+	}
 
-    public void paint(Graphics g)
-    {
-        super.paint(g);
-        
-        for(int i = 0; i < length(); i++)
-        {
-            Image image = getCardAtLocation(i).getImage();
-            g.drawImage(image, 0, 0, null);
-        }
-    }
+	public void paint(Graphics g) {
+		super.paint(g);
+
+		for (int i = 0; i < length(); i++) {
+			Image image = getCardAtLocation(i).getImage();
+			g.drawImage(image, 0, 0, null);
+		}
+	}
 }
