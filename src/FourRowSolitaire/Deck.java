@@ -38,6 +38,23 @@ public class Deck {
 		shuffle();
 	}
 
+	// code added to allow instantiating an unshuffled deck
+	// create stack deck
+	/*
+	 * Spades are 1 -> 13
+	 * Clubs are 14 -> 26
+	 * Diamonds are 26 -> 39
+	 * Hearts are 39 -> 52
+	 */
+	public Deck(int deckNumber, boolean t) {
+		deck = new LinkedList<Card>();
+		
+		for (int i = 1; i <= 52; i++) {
+			createCard(i);
+		}
+	}
+	
+	
 	public LinkedList<Card> getDeck() {
 		return deck;
 	}
