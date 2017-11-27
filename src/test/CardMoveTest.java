@@ -12,7 +12,9 @@ import org.junit.Test;
 
 import FourRowSolitaire.AcePile;
 import FourRowSolitaire.Card;
+import FourRowSolitaire.CardStack;
 import FourRowSolitaire.Deck;
+import FourRowSolitaire.SingleCell;
 /*
  * Testing validMove() methods of:
  * SingleCell.java
@@ -62,7 +64,7 @@ public class CardMoveTest {
 		
 		
 		// add the Ace of Hearts to the deck
-		heartAcePile.push(deckCards.get(39));
+		assertEquals(deckCards.get(39), heartAcePile.push(deckCards.get(39)));
 		
 		// check if we can add the 2 of hearts
 		assertTrue(heartAcePile.isValidMove(deckCards.get(40)));
@@ -71,11 +73,59 @@ public class CardMoveTest {
 		assertFalse(heartAcePile.isValidMove(deckCards.get(41)));
 		
 		// add the 2 of hearts then check if we can add 3 of hearts
-		heartAcePile.push(deckCards.get(40));
+		assertEquals(deckCards.get(40), heartAcePile.push(deckCards.get(40)));
 		assertTrue(heartAcePile.isValidMove(deckCards.get(41)));
 		
 		// check if we can add 3 of spades
 		assertFalse(heartAcePile.isValidMove(deckCards.get(3)));
+	}
+	
+	@Test
+	public void testSingleCell() {
+		
+		// create a single cell 
+		SingleCell testSingle = new SingleCell();
+		
+		// can we add a card?
+		assertTrue(testSingle.isValidMove(deckCards.get(1)));
+		
+		// add a card
+		assertEquals(deckCards.get(1), testSingle.push(deckCards.get(1)));
+		
+		// we shouldn't be able to add any cards now
+		assertFalse(testSingle.isValidMove(deckCards.get(2)));
+	}
+	
+	@Test
+	public void testCardStack() {
+		
+		// create a card stack
+		CardStack testStack = new CardStack();
+		
+		// test if we can place a non-king card onto the empty stack
+		assertFalse(testStack.isValidMove(deckCards.get(1)));
+		
+		// test if we can place a king onto an empty stack
+		assertTrue(testStack.isValidMove(deckCards.get(13)));
+		
+		// add the king to the stack
+		assertEquals(deckCards.get(13), testStack.push(deckCards.get(13)));
+		
+		// now test can we add the same suit queen
+		assertFalse(testStack.isValidMove(deckCards.get(12)));
+		
+		// now test if can add an off-suit different color queen
+		assertTrue(testStack.isValidMove(deckCards.get(38)));
+		
+		// place the card to the stack
+		assertEquals(deckCards.get(38), testStack.push(deckCards.get(38)));
+		
+		// add a card to the stack via add method as if being dealt
+		testStack.addCard(deckCards.get(40));
+		
+		// now check if that changes what will be accepted
+		assertFalse(testStack.isValidMove(deckCards.get(41)));
+		
 	}
 
 }
