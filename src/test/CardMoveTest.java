@@ -13,6 +13,7 @@ import org.junit.Test;
 import FourRowSolitaire.AcePile;
 import FourRowSolitaire.Card;
 import FourRowSolitaire.CardStack;
+import FourRowSolitaire.Column;
 import FourRowSolitaire.Deck;
 import FourRowSolitaire.SingleCell;
 /*
@@ -96,6 +97,8 @@ public class CardMoveTest {
 		assertFalse(testSingle.isValidMove(deckCards.get(2)));
 	}
 	
+	// card stacks are stacks the assembled stacks inside the columns
+	// we will need to check 
 	@Test
 	public void testCardStack() {
 		
@@ -119,12 +122,44 @@ public class CardMoveTest {
 		assertTrue(testStack.isValidMove(deckCards.get(37)));
 		
 		// place the card to the stack
-		assertEquals(deckCards.get(38), testStack.push(deckCards.get(38)));
+		assertEquals(deckCards.get(37), testStack.push(deckCards.get(37)));
 		
 		// add a card to the stack via add method as if being dealt
 		testStack.addCard(deckCards.get(40));
 		
 		// now check if that changes what will be accepted
 		assertFalse(testStack.isValidMove(deckCards.get(41)));
+	}
+	
+	@Test
+	public void testColumn() {
+		
+		// create a new column
+		Column testColumn = new Column();
+		
+		// test if we can place a non-king card onto the empty stack
+		assertFalse(testColumn.isValidMove(deckCards.get(1)));
+		
+		// test if we can place a king onto an empty stack
+		// remember testStack starts at 0 not 1, so kings are at position 12
+		assertTrue(testColumn.isValidMove(deckCards.get(12)));
+		
+		// add the king to the stack
+		assertEquals(deckCards.get(12), testColumn.push(deckCards.get(12)));
+		
+		// now test can we add the same suit queen
+		assertFalse(testColumn.isValidMove(deckCards.get(12)));
+		
+		// now test if can add an off-suit different color queen
+		assertTrue(testColumn.isValidMove(deckCards.get(37)));
+		
+		// place the card to the stack
+		assertEquals(deckCards.get(37), testColumn.push(deckCards.get(37)));
+		
+		// add a card to the stack via add method as if being dealt
+		testColumn.addCard(deckCards.get(40));
+		
+		// now check if that changes what will be accepted
+		assertFalse(testColumn.isValidMove(deckCards.get(41)));
 	}
 }
