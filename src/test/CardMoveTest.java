@@ -106,16 +106,17 @@ public class CardMoveTest {
 		assertFalse(testStack.isValidMove(deckCards.get(1)));
 		
 		// test if we can place a king onto an empty stack
-		assertTrue(testStack.isValidMove(deckCards.get(13)));
+		// remember testStack starts at 0 not 1, so kings are at position 12
+		assertTrue(testStack.isValidMove(deckCards.get(12)));
 		
 		// add the king to the stack
-		assertEquals(deckCards.get(13), testStack.push(deckCards.get(13)));
+		assertEquals(deckCards.get(12), testStack.push(deckCards.get(12)));
 		
 		// now test can we add the same suit queen
 		assertFalse(testStack.isValidMove(deckCards.get(12)));
 		
 		// now test if can add an off-suit different color queen
-		assertTrue(testStack.isValidMove(deckCards.get(38)));
+		assertTrue(testStack.isValidMove(deckCards.get(37)));
 		
 		// place the card to the stack
 		assertEquals(deckCards.get(38), testStack.push(deckCards.get(38)));
@@ -125,7 +126,5 @@ public class CardMoveTest {
 		
 		// now check if that changes what will be accepted
 		assertFalse(testStack.isValidMove(deckCards.get(41)));
-		
 	}
-
 }
