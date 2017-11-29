@@ -43,8 +43,8 @@ public class Deck {
 	/*
 	 * Spades are 1 -> 13
 	 * Clubs are 14 -> 26
-	 * Diamonds are 26 -> 39
-	 * Hearts are 39 -> 52
+	 * Diamonds are 27 -> 39
+	 * Hearts are 40 -> 52
 	 */
 	public Deck(int deckNumber, boolean t) {
 		deck = new LinkedList<Card>();
