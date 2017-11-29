@@ -288,6 +288,7 @@ public class FourRowSolitaire extends SolitaireBoard implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		// if we've made a move, then starting a new game = a loss
 		if (e.getSource() == newGame) {
 			if (sourceList.size() == 0) {
 				super.newGame(GAME_WON);

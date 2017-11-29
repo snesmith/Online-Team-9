@@ -81,6 +81,8 @@ public class SolitaireBoard extends JFrame {
 	private int difficulty = 2; // 1 = easy, 2 = medium, 3 = hard
 	private int newDifficulty = difficulty;
 
+	// sourcelist changed to protected, if we select new game in the fourrowsolitaire.java
+	// we need to see if we've made any moves to decide if it counts as a loss
 	protected LinkedList<CardStack> sourceList = new LinkedList<CardStack>();
 	private LinkedList<CardStack> destinationList = new LinkedList<CardStack>();
 	private LinkedList<Integer> numCards = new LinkedList<Integer>();
