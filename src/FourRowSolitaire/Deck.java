@@ -30,14 +30,28 @@ import java.util.Random;
  * @author Matt Stephen
  */
 public class Deck {
+	// flag to indicate playtest
+	private boolean playtest = true;
 	private int deckNumber;
 	private LinkedList<Card> deck = new LinkedList<Card>();
 
 	public Deck(int deckNumber) {
-		this.deckNumber = deckNumber;
-		shuffle();
+		if (!playtest) {
+			this.deckNumber = deckNumber;
+			shuffle();
+		} else {
+			this.deckNumber = deckNumber;
+			stackDeck();
+		}
 	}
 
+	private void stackDeck() {
+		for (int s = 1; s < 14; s++) {
+			for (int c = 0; c < 4; c++ ) {
+				createCard(s + (c *13));
+			}
+		}
+	}
 	// code added to allow instantiating an unshuffled deck
 	// create stack deck
 	/*
