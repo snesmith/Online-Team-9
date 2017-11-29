@@ -81,7 +81,7 @@ public class SolitaireBoard extends JFrame {
 	private int difficulty = 2; // 1 = easy, 2 = medium, 3 = hard
 	private int newDifficulty = difficulty;
 
-	private LinkedList<CardStack> sourceList = new LinkedList<CardStack>();
+	protected LinkedList<CardStack> sourceList = new LinkedList<CardStack>();
 	private LinkedList<CardStack> destinationList = new LinkedList<CardStack>();
 	private LinkedList<Integer> numCards = new LinkedList<Integer>();
 	private LinkedList<Integer> numCardsInDiscardView = new LinkedList<Integer>();

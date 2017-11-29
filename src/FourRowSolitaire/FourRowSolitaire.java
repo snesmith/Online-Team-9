@@ -289,7 +289,11 @@ public class FourRowSolitaire extends SolitaireBoard implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == newGame) {
-			super.newGame(GAME_LOST);
+			if (sourceList.size() == 0) {
+				super.newGame(GAME_WON);
+			} else {
+				super.newGame(GAME_LOST);
+			}
 		} else if (e.getSource() == undo) {
 			super.undoMove();
 		} else if (e.getSource() == hint) {
