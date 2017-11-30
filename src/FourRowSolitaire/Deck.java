@@ -44,30 +44,34 @@ public class Deck {
 			stackDeck();
 		}
 	}
-
-	private void stackDeck() {
-		for (int s = 1; s < 14; s++) {
-			for (int c = 0; c < 4; c++ ) {
-				createCard(s + (c *13));
-			}
-		}
-	}
-	// code added to allow instantiating an unshuffled deck
-	// create stack deck
 	/*
-	 * Spades are 1 -> 13
-	 * Clubs are 14 -> 26
-	 * Diamonds are 27 -> 39
-	 * Hearts are 40 -> 52
+	 * test code
 	 */
-	public Deck(int deckNumber, boolean t) {
-		deck = new LinkedList<Card>();
-		
-		for (int i = 1; i <= 52; i++) {
-			createCard(i);
-		}
-	}
-	
+//	private void stackDeck() {
+//		for (int s = 1; s < 14; s++) {
+//			for (int c = 0; c < 4; c++ ) {
+//				createCard(s + (c *13));
+//			}
+//		}
+//	}
+//	// code added to allow instantiating an unshuffled deck
+//	// create stack deck
+//	/*
+//	 * Spades are 1 -> 13
+//	 * Clubs are 14 -> 26
+//	 * Diamonds are 27 -> 39
+//	 * Hearts are 40 -> 52
+//	 */
+//	public Deck(int deckNumber, boolean t) {
+//		deck = new LinkedList<Card>();
+//		
+//		for (int i = 1; i <= 52; i++) {
+//			createCard(i);
+//		}
+//	}
+	/*
+	 * End test code
+	 */
 	
 	public LinkedList<Card> getDeck() {
 		return deck;
