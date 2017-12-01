@@ -31,7 +31,7 @@ import java.util.Random;
  */
 public class Deck {
 	// flag to indicate playtest
-	private boolean playtest = true;
+	private boolean playtest = false;
 	private int deckNumber;
 	private LinkedList<Card> deck = new LinkedList<Card>();
 
