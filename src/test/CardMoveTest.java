@@ -38,7 +38,7 @@ public class CardMoveTest {
 
 	@Before
 	public void setUp() throws Exception {
-		// set up an ace pile
+		// set up a new deck for testing
 		testDeck = new Deck(1, true);
 		deckCards = testDeck.getDeck();
 		
@@ -70,6 +70,7 @@ public class CardMoveTest {
 		// check if we can add the 2 of hearts
 		assertTrue(heartAcePile.isValidMove(deckCards.get(40)));
 		
+		// even though we checked the 2 of hearts, we didn't add it, so
 		// check if we can't move the 3 of hearts
 		assertFalse(heartAcePile.isValidMove(deckCards.get(41)));
 		
@@ -97,8 +98,8 @@ public class CardMoveTest {
 		assertFalse(testSingle.isValidMove(deckCards.get(2)));
 	}
 	
-	// card stacks are stacks the assembled stacks inside the columns
-	// we will need to check 
+	// card stacks are stacks of properly organized cards
+	// that we've assembled inside the columns
 	@Test
 	public void testCardStack() {
 		
