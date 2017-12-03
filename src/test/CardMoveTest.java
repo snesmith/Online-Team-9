@@ -96,6 +96,14 @@ public class CardMoveTest {
 		
 		// we shouldn't be able to add any cards now
 		assertFalse(testSingle.isValidMove(deckCards.get(2)));
+		
+		// can we add a stack?
+		// create a card stack
+		CardStack testStack = new CardStack();
+		testStack.push(deckCards.get(12));
+		testStack.push(deckCards.get(37));
+		assertFalse(testSingle.isValidMove(testStack));
+		
 	}
 	
 	// card stacks are stacks of properly organized cards

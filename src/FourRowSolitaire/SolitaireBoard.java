@@ -343,7 +343,7 @@ public class SolitaireBoard extends JFrame {
 		if (winOrLoss != GAME_WON && winOrLoss != DO_NOTHING) {
 			int check = JOptionPane.showConfirmDialog(this,
 					"Quitting the current game will result in a loss.\n" + "Do you wish to continue?", "Continue?",
-					JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.YES_NO_OPTION);
 
 			if (check == JOptionPane.YES_OPTION) {
 				recordGame(GAME_LOST);
