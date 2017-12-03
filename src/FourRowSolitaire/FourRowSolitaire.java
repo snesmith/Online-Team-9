@@ -560,6 +560,8 @@ public class FourRowSolitaire extends SolitaireBoard implements ActionListener {
 			JOptionPane.showMessageDialog(this,
 					"Four Row Solitaire was created and programmed by Matt Stephen.\n"
 							+ "\nYou can modify this code in accordance with GPL v3.0.\n"
+							+ "\nAdditional coding by 2017FallB-SER216 Team 9 composed of:\n"
+							+ "\nShawn Weiner, Steven Nesmith, and Curtis Galluzzo.\n"
 							+ "\nTo check if there is a newer version, go to fourrow.sourceforge.net.",
 					"About Game", JOptionPane.INFORMATION_MESSAGE);
 		} else if (e.getSource() == checkUpdate) {
