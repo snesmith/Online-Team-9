@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FourRowSolitaire.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 3, 2017 1:29:15 AM)</a> &gt; <a href="../../index.html" class="el_group">FourRowSolitaire</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">FourRowSolitaire</a> &gt; <span class="el_source">FourRowSolitaire.java</span></div><h1>FourRowSolitaire.java</h1><pre class="source lang-java linenums">/*
+    This file is a part of Four Row Solitaire
+
+    Copyright (C) 2010 by Matt Stephen
+
+    Four Row Solitaire is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Four Row Solitaire is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with FourRowSolitaire.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package FourRowSolitaire;
+
+import java.awt.Desktop;
+import java.awt.event.*;
+import java.io.*;
+import java.net.URI;
+import java.net.URL;
+import java.util.LinkedList;
+import javax.swing.*;
+
+/**
+ * Class: FourRowSolitaire
+ * 
+ * Description: The FourRowSolitaire class adds a menu to the SolitaireBoard
+ * Frame.
+ * 
+ * @author Matt Stephen
+ */
+public class FourRowSolitaire extends SolitaireBoard implements ActionListener {
+	public static final String version = &quot;.40&quot;;
+
+<span class="fc" id="L41">	private JMenuBar menuBar = new JMenuBar();</span>
+
+<span class="fc" id="L43">	private JMenu game = new JMenu(&quot;Game&quot;);</span>
+<span class="fc" id="L44">	private JMenu helpMenu = new JMenu(&quot;Help&quot;);</span>
+
+<span class="fc" id="L46">	private JMenuItem newGame = new JMenuItem(&quot;New Game&quot;);</span>
+<span class="fc" id="L47">	private JMenuItem undo = new JMenuItem(&quot;Undo Last Move&quot;);</span>
+<span class="fc" id="L48">	private JMenuItem hint = new JMenuItem(&quot;Hint&quot;);</span>
+<span class="fc" id="L49">	private JMenuItem statistics = new JMenuItem(&quot;Statistics&quot;);</span>
+<span class="fc" id="L50">	private JMenuItem options = new JMenuItem(&quot;Options&quot;);</span>
+<span class="fc" id="L51">	private JMenuItem appearance = new JMenuItem(&quot;Change Appearance&quot;);</span>
+<span class="fc" id="L52">	private JMenuItem exit = new JMenuItem(&quot;Exit&quot;);</span>
+
+<span class="fc" id="L54">	private JMenuItem help = new JMenuItem(&quot;View Help&quot;);</span>
+<span class="fc" id="L55">	private JMenuItem about = new JMenuItem(&quot;About Game&quot;);</span>
+<span class="fc" id="L56">	private JMenuItem checkUpdate = new JMenuItem(&quot;Check for Updates&quot;);</span>
+
+<span class="fc" id="L58">	public FourRowSolitaire() {</span>
+		// checkForUpdate();
+
+<span class="fc" id="L61">		game.add(newGame);</span>
+<span class="fc" id="L62">		game.addSeparator();</span>
+<span class="fc" id="L63">		game.add(undo);</span>
+<span class="fc" id="L64">		game.add(hint);</span>
+<span class="fc" id="L65">		game.addSeparator();</span>
+<span class="fc" id="L66">		game.add(statistics);</span>
+<span class="fc" id="L67">		game.add(options);</span>
+<span class="fc" id="L68">		game.add(appearance);</span>
+<span class="fc" id="L69">		game.addSeparator();</span>
+<span class="fc" id="L70">		game.add(exit);</span>
+
+<span class="fc" id="L72">		newGame.addActionListener(this);</span>
+<span class="fc" id="L73">		undo.addActionListener(this);</span>
+<span class="fc" id="L74">		hint.addActionListener(this);</span>
+<span class="fc" id="L75">		statistics.addActionListener(this);</span>
+<span class="fc" id="L76">		options.addActionListener(this);</span>
+<span class="fc" id="L77">		appearance.addActionListener(this);</span>
+<span class="fc" id="L78">		exit.addActionListener(this);</span>
+
+<span class="fc" id="L80">		helpMenu.add(help);</span>
+<span class="fc" id="L81">		helpMenu.add(about);</span>
+<span class="fc" id="L82">		helpMenu.add(checkUpdate);</span>
+
+<span class="fc" id="L84">		help.addActionListener(this);</span>
+<span class="fc" id="L85">		about.addActionListener(this);</span>
+<span class="fc" id="L86">		checkUpdate.addActionListener(this);</span>
+
+<span class="fc" id="L88">		menuBar.add(game);</span>
+<span class="fc" id="L89">		menuBar.add(helpMenu);</span>
+
+<span class="fc" id="L91">		setJMenuBar(menuBar);</span>
+
+<span class="fc" id="L93">		newGame.setMnemonic('N');</span>
+<span class="fc" id="L94">		newGame.setAccelerator(KeyStroke.getKeyStroke(&quot;F2&quot;));</span>
+<span class="fc" id="L95">		undo.setMnemonic('u');</span>
+<span class="fc" id="L96">		undo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK));</span>
+<span class="fc" id="L97">		hint.setMnemonic('h');</span>
+<span class="fc" id="L98">		hint.setAccelerator(KeyStroke.getKeyStroke('h'));</span>
+<span class="fc" id="L99">		statistics.setMnemonic('s');</span>
+<span class="fc" id="L100">		statistics.setAccelerator(KeyStroke.getKeyStroke(&quot;F4&quot;));</span>
+<span class="fc" id="L101">		options.setMnemonic('o');</span>
+<span class="fc" id="L102">		options.setAccelerator(KeyStroke.getKeyStroke(&quot;F5&quot;));</span>
+<span class="fc" id="L103">		appearance.setMnemonic('a');</span>
+<span class="fc" id="L104">		appearance.setAccelerator(KeyStroke.getKeyStroke(&quot;F7&quot;));</span>
+<span class="fc" id="L105">		exit.setMnemonic('x');</span>
+
+<span class="fc" id="L107">		help.setMnemonic('v');</span>
+<span class="fc" id="L108">		help.setAccelerator(KeyStroke.getKeyStroke(&quot;F1&quot;));</span>
+<span class="fc" id="L109">		about.setMnemonic('a');</span>
+
+<span class="fc" id="L111">		loadData();</span>
+<span class="fc" id="L112">	}</span>
+
+	private void checkForUpdate() {
+		try {
+<span class="nc" id="L116">			URL url = new URL(&quot;http://www.utdallas.edu/~mas073100/FourRowSolitaire/version.txt&quot;);</span>
+<span class="nc" id="L117">			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));</span>
+
+<span class="nc" id="L119">			String inputLine = in.readLine();</span>
+<span class="nc" id="L120">			in.close();</span>
+
+			// Sometimes reads an html document if disconnected from internet
+<span class="nc bnc" id="L123" title="All 4 branches missed.">			if (!inputLine.contains(&quot;DOCTYPE&quot;) &amp;&amp; !version.equals(inputLine)) {</span>
+<span class="nc" id="L124">				JOptionPane.showMessageDialog(this,</span>
+<span class="nc" id="L125">						&quot;There is a newer version available, &quot; + &quot;click help &gt; check for updates to get it.&quot;);</span>
+			}
+<span class="nc" id="L127">		} catch (Exception ex) {</span>
+		}
+<span class="nc" id="L129">	}</span>
+
+	private void loadData() {
+<span class="fc" id="L132">		String fileLocation = System.getProperty(&quot;user.home&quot;) + System.getProperty(&quot;file.separator&quot;);</span>
+<span class="fc" id="L133">		int count = 0, temp = 0, correctedStatistics = -2;</span>
+<span class="fc" id="L134">		int newDrawCount = 1, timerStatus = 0, deckNumber = 3, backgroundNumber = 2;</span>
+<span class="fc" id="L135">		int saved = 0, winAnimation = 0, winSounds = 0, drawCount = 1, deckThroughs = 1;</span>
+<span class="fc" id="L136">		int difficulty = 2, newDifficulty = 2;</span>
+
+		try {
+<span class="fc" id="L139">			File file = new File(fileLocation + &quot;frs-statistics.dat&quot;);</span>
+<span class="fc" id="L140">			file.createNewFile();</span>
+<span class="fc" id="L141">			DataInputStream input = new DataInputStream(new FileInputStream(file));</span>
+
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">			if (input.available() &gt; 0) {</span>
+<span class="fc" id="L144">				correctedStatistics = input.readInt();</span>
+<span class="fc" id="L145">				count++;</span>
+			}
+
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">			if (correctedStatistics == -2) {</span>
+				// No statistics file found
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">			} else if (correctedStatistics == -1) {</span>
+				// Statistics file is formatted to the new style of saving statistics
+<span class="pc bpc" id="L152" title="1 of 4 branches missed.">				while ((input.available() &gt; 0) &amp;&amp; count &lt; 42) {</span>
+<span class="fc" id="L153">					temp = input.readInt();</span>
+<span class="fc bfc" id="L154" title="All 12 branches covered.">					switch (count) {</span>
+					case 31:
+<span class="fc" id="L156">						drawCount = temp;</span>
+<span class="fc" id="L157">						break;</span>
+					case 32:
+<span class="fc" id="L159">						newDrawCount = temp;</span>
+<span class="fc" id="L160">						break;</span>
+					case 33:
+<span class="fc" id="L162">						deckNumber = temp;</span>
+<span class="fc" id="L163">						break;</span>
+					case 34:
+<span class="fc" id="L165">						backgroundNumber = temp;</span>
+<span class="fc" id="L166">						break;</span>
+					case 35:
+<span class="fc" id="L168">						timerStatus = temp;</span>
+<span class="fc" id="L169">						break;</span>
+					case 36:
+<span class="fc" id="L171">						winAnimation = temp;</span>
+<span class="fc" id="L172">						break;</span>
+					case 37:
+<span class="fc" id="L174">						winSounds = temp;</span>
+<span class="fc" id="L175">						break;</span>
+					case 38:
+<span class="fc" id="L177">						deckThroughs = temp;</span>
+<span class="fc" id="L178">						break;</span>
+					case 39:
+<span class="fc" id="L180">						difficulty = temp;</span>
+<span class="fc" id="L181">						break;</span>
+					case 40:
+<span class="fc" id="L183">						newDifficulty = temp;</span>
+<span class="fc" id="L184">						break;</span>
+					case 41:
+<span class="fc" id="L186">						saved = temp;</span>
+<span class="fc" id="L187">						break;</span>
+
+					default:
+						;
+						break;
+					}
+
+<span class="fc" id="L194">					count++;</span>
+				}
+<span class="nc" id="L196">			} else {</span>
+				// Statistics file is formatted to the old style of saving statistics
+<span class="nc bnc" id="L198" title="All 4 branches missed.">				while ((input.available() &gt; 0) &amp;&amp; count &lt; 14) {</span>
+<span class="nc" id="L199">					temp = input.readInt();</span>
+<span class="nc bnc" id="L200" title="All 10 branches missed.">					switch (count) {</span>
+					case 5:
+<span class="nc" id="L202">						newDrawCount = temp;</span>
+<span class="nc" id="L203">						break;</span>
+					case 6:
+<span class="nc" id="L205">						timerStatus = temp;</span>
+<span class="nc" id="L206">						break;</span>
+					case 7:
+<span class="nc" id="L208">						deckNumber = temp;</span>
+<span class="nc" id="L209">						break;</span>
+					case 8:
+<span class="nc" id="L211">						backgroundNumber = temp;</span>
+<span class="nc" id="L212">						break;</span>
+					case 9:
+<span class="nc" id="L214">						saved = temp;</span>
+<span class="nc" id="L215">						break;</span>
+					case 10:
+<span class="nc" id="L217">						winAnimation = temp;</span>
+<span class="nc" id="L218">						break;</span>
+					case 11:
+<span class="nc" id="L220">						winSounds = temp;</span>
+<span class="nc" id="L221">						break;</span>
+					case 12:
+<span class="nc" id="L223">						drawCount = temp;</span>
+<span class="nc" id="L224">						break;</span>
+					case 13:
+<span class="nc" id="L226">						deckThroughs = temp;</span>
+<span class="nc" id="L227">						break;</span>
+
+					default:
+						;
+						break;
+					}
+
+<span class="nc" id="L234">					count++;</span>
+				}
+			}
+
+<span class="fc" id="L238">			input.close();</span>
+<span class="pc" id="L239">		} catch (Exception ex) {</span>
+<span class="nc" id="L240">			System.out.println(ex);</span>
+		}
+
+<span class="fc" id="L243">		super.setDeckNumber(deckNumber);</span>
+<span class="fc" id="L244">		super.setBackgroundNumber(backgroundNumber);</span>
+<span class="fc" id="L245">		super.setTimerStatus(timerStatus);</span>
+<span class="fc" id="L246">		super.setNewDrawCount(newDrawCount);</span>
+<span class="fc" id="L247">		super.setWinAnimationStatus(winAnimation);</span>
+<span class="fc" id="L248">		super.setWinSoundsStatus(winSounds);</span>
+<span class="fc" id="L249">		super.setDrawCount(drawCount);</span>
+<span class="fc" id="L250">		super.setDeckThroughs(deckThroughs);</span>
+<span class="fc" id="L251">		super.setDifficulty(difficulty);</span>
+<span class="fc" id="L252">		super.setNewDifficulty(newDifficulty);</span>
+
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">		if (saved == 1) {</span>
+<span class="fc" id="L255">			LinkedList&lt;Integer&gt; cards = new LinkedList&lt;Integer&gt;();</span>
+
+			try {
+<span class="fc" id="L258">				File file = new File(fileLocation + &quot;frs-savedgame.dat&quot;);</span>
+<span class="fc" id="L259">				file.createNewFile();</span>
+<span class="fc" id="L260">				DataInputStream input = new DataInputStream(new FileInputStream(file));</span>
+
+<span class="fc bfc" id="L262" title="All 2 branches covered.">				while (input.available() &gt; 0) {</span>
+<span class="fc" id="L263">					cards.add(input.readInt());</span>
+				}
+
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">				if (cards.size() == 66) {</span>
+<span class="fc" id="L267">					super.createBoard(cards);</span>
+<span class="fc" id="L268">				} else {</span>
+<span class="nc" id="L269">					System.err.println(</span>
+<span class="nc" id="L270">							&quot;Problem Loading Saved Game (More or Less Than 52 Cards Stored)... Starting New Game&quot;);</span>
+<span class="nc" id="L271">					super.createBoard(null);</span>
+				}
+<span class="nc" id="L273">			} catch (Exception ex) {</span>
+<span class="nc" id="L274">				System.err.println(&quot;Problem Loading Saved Game (Unknown Error)... Starting New Game&quot;);</span>
+<span class="nc" id="L275">				super.createBoard(null);</span>
+			}
+<span class="nc" id="L277">		} else {</span>
+<span class="nc" id="L278">			super.createBoard(null);</span>
+		}
+
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">		if (correctedStatistics != -1) {</span>
+<span class="nc" id="L282">			super.saveOptions();</span>
+		}
+<span class="fc" id="L284">	}</span>
+
+	public static void main(String[] args) {
+<span class="fc" id="L287">		new FourRowSolitaire();</span>
+<span class="fc" id="L288">	}</span>
+
+	public void actionPerformed(ActionEvent e) {
+		// if we've made a move, then starting a new game = a loss
+<span class="fc bfc" id="L292" title="All 2 branches covered.">		if (e.getSource() == newGame) {</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">			if (sourceList.size() == 0) {</span>
+<span class="fc" id="L294">				super.newGame(GAME_WON);</span>
+<span class="fc" id="L295">			} else {</span>
+<span class="fc" id="L296">				super.newGame(GAME_LOST);</span>
+			}
+<span class="fc bfc" id="L298" title="All 2 branches covered.">		} else if (e.getSource() == undo) {</span>
+<span class="fc" id="L299">			super.undoMove();</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">		} else if (e.getSource() == hint) {</span>
+<span class="fc" id="L301">			super.getHint();</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">		} else if (e.getSource() == statistics) {</span>
+<span class="fc" id="L303">			String fileLocation = System.getProperty(&quot;user.home&quot;) + System.getProperty(&quot;file.separator&quot;)</span>
+<span class="fc" id="L304">					+ &quot;frs-statistics.dat&quot;;</span>
+
+<span class="fc" id="L306">			int count = 0, temp = 0;</span>
+<span class="fc" id="L307">			int gamesPlayed1e = 0, gamesWon1e = 0, winStreak1e = 0, lossStreak1e = 0, currentStreak1e = 0;</span>
+<span class="fc" id="L308">			int gamesPlayed1m = 0, gamesWon1m = 0, winStreak1m = 0, lossStreak1m = 0, currentStreak1m = 0;</span>
+<span class="fc" id="L309">			int gamesPlayed1h = 0, gamesWon1h = 0, winStreak1h = 0, lossStreak1h = 0, currentStreak1h = 0;</span>
+<span class="fc" id="L310">			int gamesPlayed3e = 0, gamesWon3e = 0, winStreak3e = 0, lossStreak3e = 0, currentStreak3e = 0;</span>
+<span class="fc" id="L311">			int gamesPlayed3m = 0, gamesWon3m = 0, winStreak3m = 0, lossStreak3m = 0, currentStreak3m = 0;</span>
+<span class="fc" id="L312">			int gamesPlayed3h = 0, gamesWon3h = 0, winStreak3h = 0, lossStreak3h = 0, currentStreak3h = 0;</span>
+
+			try {
+<span class="fc" id="L315">				File file = new File(fileLocation);</span>
+<span class="fc" id="L316">				file.createNewFile();</span>
+<span class="fc" id="L317">				DataInputStream input = new DataInputStream(new FileInputStream(file));</span>
+
+<span class="pc bpc" id="L319" title="1 of 4 branches missed.">				while ((input.available() &gt; 0) &amp;&amp; count &lt; 31) {</span>
+<span class="fc" id="L320">					temp = input.readInt();</span>
+<span class="fc bfc" id="L321" title="All 31 branches covered.">					switch (count) {</span>
+					case 1:
+<span class="fc" id="L323">						gamesPlayed1e = temp;</span>
+<span class="fc" id="L324">						break;</span>
+					case 2:
+<span class="fc" id="L326">						gamesWon1e = temp;</span>
+<span class="fc" id="L327">						break;</span>
+					case 3:
+<span class="fc" id="L329">						winStreak1e = temp;</span>
+<span class="fc" id="L330">						break;</span>
+					case 4:
+<span class="fc" id="L332">						lossStreak1e = temp;</span>
+<span class="fc" id="L333">						break;</span>
+					case 5:
+<span class="fc" id="L335">						currentStreak1e = temp;</span>
+<span class="fc" id="L336">						break;</span>
+
+					case 6:
+<span class="fc" id="L339">						gamesPlayed1m = temp;</span>
+<span class="fc" id="L340">						break;</span>
+					case 7:
+<span class="fc" id="L342">						gamesWon1m = temp;</span>
+<span class="fc" id="L343">						break;</span>
+					case 8:
+<span class="fc" id="L345">						winStreak1m = temp;</span>
+<span class="fc" id="L346">						break;</span>
+					case 9:
+<span class="fc" id="L348">						lossStreak1m = temp;</span>
+<span class="fc" id="L349">						break;</span>
+					case 10:
+<span class="fc" id="L351">						currentStreak1m = temp;</span>
+<span class="fc" id="L352">						break;</span>
+
+					case 11:
+<span class="fc" id="L355">						gamesPlayed1h = temp;</span>
+<span class="fc" id="L356">						break;</span>
+					case 12:
+<span class="fc" id="L358">						gamesWon1h = temp;</span>
+<span class="fc" id="L359">						break;</span>
+					case 13:
+<span class="fc" id="L361">						winStreak1h = temp;</span>
+<span class="fc" id="L362">						break;</span>
+					case 14:
+<span class="fc" id="L364">						lossStreak1h = temp;</span>
+<span class="fc" id="L365">						break;</span>
+					case 15:
+<span class="fc" id="L367">						currentStreak1h = temp;</span>
+<span class="fc" id="L368">						break;</span>
+
+					case 16:
+<span class="fc" id="L371">						gamesPlayed3e = temp;</span>
+<span class="fc" id="L372">						break;</span>
+					case 17:
+<span class="fc" id="L374">						gamesWon3e = temp;</span>
+<span class="fc" id="L375">						break;</span>
+					case 18:
+<span class="fc" id="L377">						winStreak3e = temp;</span>
+<span class="fc" id="L378">						break;</span>
+					case 19:
+<span class="fc" id="L380">						lossStreak3e = temp;</span>
+<span class="fc" id="L381">						break;</span>
+					case 20:
+<span class="fc" id="L383">						currentStreak3e = temp;</span>
+<span class="fc" id="L384">						break;</span>
+
+					case 21:
+<span class="fc" id="L387">						gamesPlayed3m = temp;</span>
+<span class="fc" id="L388">						break;</span>
+					case 22:
+<span class="fc" id="L390">						gamesWon3m = temp;</span>
+<span class="fc" id="L391">						break;</span>
+					case 23:
+<span class="fc" id="L393">						winStreak3m = temp;</span>
+<span class="fc" id="L394">						break;</span>
+					case 24:
+<span class="fc" id="L396">						lossStreak3m = temp;</span>
+<span class="fc" id="L397">						break;</span>
+					case 25:
+<span class="fc" id="L399">						currentStreak3m = temp;</span>
+<span class="fc" id="L400">						break;</span>
+
+					case 26:
+<span class="fc" id="L403">						gamesPlayed3h = temp;</span>
+<span class="fc" id="L404">						break;</span>
+					case 27:
+<span class="fc" id="L406">						gamesWon3h = temp;</span>
+<span class="fc" id="L407">						break;</span>
+					case 28:
+<span class="fc" id="L409">						winStreak3h = temp;</span>
+<span class="fc" id="L410">						break;</span>
+					case 29:
+<span class="fc" id="L412">						lossStreak3h = temp;</span>
+<span class="fc" id="L413">						break;</span>
+					case 30:
+<span class="fc" id="L415">						currentStreak3h = temp;</span>
+<span class="fc" id="L416">						break;</span>
+
+					default:
+						;
+						break;
+					}
+
+<span class="fc" id="L423">					count++;</span>
+				}
+
+<span class="fc" id="L426">				input.close();</span>
+<span class="pc" id="L427">			} catch (Exception ex) {</span>
+<span class="nc" id="L428">				System.out.println(ex);</span>
+			}
+
+			int winPercentage1e;
+			int winPercentage1m;
+			int winPercentage1h;
+			int winPercentage3e;
+			int winPercentage3m;
+			int winPercentage3h;
+
+<span class="fc bfc" id="L438" title="All 2 branches covered.">			if (gamesPlayed1e == 0) {</span>
+<span class="fc" id="L439">				winPercentage1e = 0;</span>
+<span class="fc" id="L440">			} else {</span>
+<span class="fc" id="L441">				winPercentage1e = 100 * gamesWon1e / gamesPlayed1e;</span>
+			}
+
+<span class="fc bfc" id="L444" title="All 2 branches covered.">			if (gamesPlayed1m == 0) {</span>
+<span class="fc" id="L445">				winPercentage1m = 0;</span>
+<span class="fc" id="L446">			} else {</span>
+<span class="fc" id="L447">				winPercentage1m = 100 * gamesWon1m / gamesPlayed1m;</span>
+			}
+
+<span class="pc bpc" id="L450" title="1 of 2 branches missed.">			if (gamesPlayed1h == 0) {</span>
+<span class="fc" id="L451">				winPercentage1h = 0;</span>
+<span class="fc" id="L452">			} else {</span>
+<span class="nc" id="L453">				winPercentage1h = 100 * gamesWon1h / gamesPlayed1h;</span>
+			}
+
+<span class="fc bfc" id="L456" title="All 2 branches covered.">			if (gamesPlayed3e == 0) {</span>
+<span class="fc" id="L457">				winPercentage3e = 0;</span>
+<span class="fc" id="L458">			} else {</span>
+<span class="fc" id="L459">				winPercentage3e = 100 * gamesWon3e / gamesPlayed3e;</span>
+			}
+
+<span class="fc bfc" id="L462" title="All 2 branches covered.">			if (gamesPlayed3m == 0) {</span>
+<span class="fc" id="L463">				winPercentage3m = 0;</span>
+<span class="fc" id="L464">			} else {</span>
+<span class="fc" id="L465">				winPercentage3m = 100 * gamesWon3m / gamesPlayed3m;</span>
+			}
+
+<span class="fc bfc" id="L468" title="All 2 branches covered.">			if (gamesPlayed3h == 0) {</span>
+<span class="fc" id="L469">				winPercentage3h = 0;</span>
+<span class="fc" id="L470">			} else {</span>
+<span class="fc" id="L471">				winPercentage3h = 100 * gamesWon3h / gamesPlayed3h;</span>
+			}
+
+<span class="fc" id="L474">			JTextArea display = new JTextArea();</span>
+<span class="fc" id="L475">			display.append(&quot;One-Card Draw (Easy)\t\tThree-Card Draw (Easy)\n&quot; + &quot;Games Played: &quot; + gamesPlayed1e</span>
+<span class="fc" id="L476">					+ &quot;\t\tGames Played: &quot; + gamesPlayed3e + &quot;\nGames Won: &quot; + gamesWon1e + &quot;\t\t\tGames Won: &quot;</span>
+<span class="fc" id="L477">					+ gamesWon3e + &quot;\n&quot; + &quot;Win Percentage: &quot; + winPercentage1e + &quot;%\t\tWin Percentage: &quot;</span>
+<span class="fc" id="L478">					+ winPercentage3e + &quot;%\n\nBest Streak: &quot; + winStreak1e + &quot;\t\t\tBest Streak: &quot; + winStreak3e + &quot;\n&quot;</span>
+<span class="fc" id="L479">					+ &quot;Worst Streak: &quot; + lossStreak1e + &quot;\t\tWorst Streak: &quot; + lossStreak3e + &quot;\n&quot; + &quot;Current Streak: &quot;</span>
+<span class="fc" id="L480">					+ currentStreak1e + &quot;\t\tCurrent Streak: &quot; + currentStreak3e + &quot;\n&quot;</span>
+<span class="fc" id="L481">					+ &quot;===================================================================\n&quot;);</span>
+
+<span class="fc" id="L483">			display.append(&quot;One-Card Draw (Medium)\t\tThree-Card Draw (Medium)\n&quot; + &quot;Games Played: &quot; + gamesPlayed1m</span>
+<span class="fc" id="L484">					+ &quot;\t\tGames Played: &quot; + gamesPlayed3m + &quot;\nGames Won: &quot; + gamesWon1m + &quot;\t\t\tGames Won: &quot;</span>
+<span class="fc" id="L485">					+ gamesWon3m + &quot;\n&quot; + &quot;Win Percentage: &quot; + winPercentage1m + &quot;%\t\tWin Percentage: &quot;</span>
+<span class="fc" id="L486">					+ winPercentage3m + &quot;%\n\nBest Streak: &quot; + winStreak1m + &quot;\t\t\tBest Streak: &quot; + winStreak3m + &quot;\n&quot;</span>
+<span class="fc" id="L487">					+ &quot;Worst Streak: &quot; + lossStreak1m + &quot;\t\tWorst Streak: &quot; + lossStreak3m + &quot;\n&quot; + &quot;Current Streak: &quot;</span>
+<span class="fc" id="L488">					+ currentStreak1m + &quot;\t\tCurrent Streak: &quot; + currentStreak3m + &quot;\n&quot;</span>
+<span class="fc" id="L489">					+ &quot;===================================================================\n&quot;);</span>
+
+<span class="fc" id="L491">			display.append(&quot;One-Card Draw (Hard)\t\tThree-Card Draw (Hard)\n&quot; + &quot;Games Played: &quot; + gamesPlayed1h</span>
+<span class="fc" id="L492">					+ &quot;\t\tGames Played: &quot; + gamesPlayed3h + &quot;\nGames Won: &quot; + gamesWon1h + &quot;\t\t\tGames Won: &quot;</span>
+<span class="fc" id="L493">					+ gamesWon3h + &quot;\n&quot; + &quot;Win Percentage: &quot; + winPercentage1h + &quot;%\t\tWin Percentage: &quot;</span>
+<span class="fc" id="L494">					+ winPercentage3h + &quot;%\n\nBest Streak: &quot; + winStreak1h + &quot;\t\t\tBest Streak: &quot; + winStreak3h + &quot;\n&quot;</span>
+<span class="fc" id="L495">					+ &quot;Worst Streak: &quot; + lossStreak1h + &quot;\t\tWorst Streak: &quot; + lossStreak3h + &quot;\n&quot; + &quot;Current Streak: &quot;</span>
+<span class="fc" id="L496">					+ currentStreak1h + &quot;\t\tCurrent Streak: &quot; + currentStreak3h);</span>
+
+<span class="fc" id="L498">			display.setOpaque(false);</span>
+<span class="fc" id="L499">			display.setBorder(null);</span>
+<span class="fc" id="L500">			display.setFont(UIManager.getFont(&quot;Label.font&quot;));</span>
+
+<span class="fc" id="L502">			Object[] buttons = { &quot;Close&quot;, &quot;Reset&quot; };</span>
+<span class="fc" id="L503">			int check = JOptionPane.showOptionDialog(this, display, &quot;Statistics&quot;, JOptionPane.OK_CANCEL_OPTION,</span>
+<span class="fc" id="L504">					JOptionPane.PLAIN_MESSAGE, null, buttons, buttons[0]);</span>
+
+<span class="fc bfc" id="L506" title="All 2 branches covered.">			if (check == 1) {</span>
+				// Reset stats
+<span class="fc" id="L508">				super.resetStats();</span>
+<span class="fc" id="L509">			} else {</span>
+				// Close
+<span class="fc" id="L511">				return;</span>
+			}
+<span class="fc bfc" id="L513" title="All 2 branches covered.">		} else if (e.getSource() == options) {</span>
+<span class="fc" id="L514">			ChangeOptions co = new ChangeOptions(this, super.getNewDrawCount(), super.getTimerNextGameStatus(),</span>
+<span class="fc" id="L515">					super.getWinAnimationStatus(), super.getWinSoundsStatus(), super.getNewDifficulty());</span>
+<span class="fc" id="L516">			int drawCount = co.getDrawCount();</span>
+<span class="fc" id="L517">			int timerStatus = co.getTimer();</span>
+<span class="fc" id="L518">			int animationStatus = co.getAnimation();</span>
+<span class="fc" id="L519">			int soundsStatus = co.getSounds();</span>
+<span class="fc" id="L520">			int difficulty = co.getDifficulty();</span>
+
+<span class="pc bpc" id="L522" title="1 of 2 branches missed.">			if (drawCount != -1) {</span>
+<span class="fc" id="L523">				super.setNewDrawCount(drawCount);</span>
+<span class="fc" id="L524">				super.setTimerStatus(timerStatus);</span>
+<span class="fc" id="L525">				super.setWinAnimationStatus(animationStatus);</span>
+<span class="fc" id="L526">				super.setWinSoundsStatus(soundsStatus);</span>
+<span class="fc" id="L527">				super.setNewDifficulty(difficulty);</span>
+			}
+
+<span class="fc" id="L530">			super.saveOptions();</span>
+<span class="fc bfc" id="L531" title="All 2 branches covered.">		} else if (e.getSource() == appearance) {</span>
+<span class="fc" id="L532">			ChangeAppearance ca = new ChangeAppearance(this, super.getDeckNumber(), super.getBackgroundNumber());</span>
+<span class="fc" id="L533">			int deckNumber = ca.getDeckNumber();</span>
+<span class="fc" id="L534">			int backgroundNumber = ca.getBackgroundNumber();</span>
+<span class="fc" id="L535">			ca.dispose();</span>
+
+<span class="pc bpc" id="L537" title="1 of 2 branches missed.">			if (deckNumber != -1) {</span>
+<span class="fc" id="L538">				super.setAppearance(deckNumber, backgroundNumber);</span>
+			}
+
+<span class="fc" id="L541">			super.saveOptions();</span>
+<span class="fc bfc" id="L542" title="All 2 branches covered.">		} else if (e.getSource() == exit) {</span>
+<span class="nc" id="L543">			super.wl.windowClosing(null);</span>
+<span class="nc" id="L544">		}</span>
+
+<span class="fc bfc" id="L546" title="All 2 branches covered.">		else if (e.getSource() == help) {</span>
+<span class="fc" id="L547">			JOptionPane.showMessageDialog(this, &quot;This game is a mixture of FreeCell and normal (Klondike) Solitaire.\n&quot;</span>
+					+ &quot;\nSimilarities to FreeCell:\n&quot; + &quot;   -The Cards in the columns are always visible\n&quot;
+					+ &quot;   -There are four individual cells at the top\n&quot; + &quot;\nSimilarities to Solitaire:\n&quot;
+					+ &quot;   -There is a deck and discard pile to draw cards from\n&quot;
+					+ &quot;   -Only Kings may be placed at the top of an empty column\n&quot;
+					+ &quot;   -Cards may be removed from the Ace piles and placed back onto the playing field\n&quot;
+					+ &quot;   -Any number of cards can be moved in one move (as long as they are stacked as in Solitaire\n&quot;
+					+ &quot;\nFeatures unique to this game:\n&quot; + &quot;   -The four individual cells start with cards in them\n&quot;
+					+ &quot;   -You may only go through the deck twice on draw one and three times on draw three\n&quot;
+					+ &quot;   -The obvious: there are only four columns, not 7 or 8 as in Solitaire and FreeCell, respectively&quot;,
+<span class="fc" id="L557">					&quot;Help!&quot;, JOptionPane.INFORMATION_MESSAGE);</span>
+<span class="fc bfc" id="L558" title="All 2 branches covered.">		} else if (e.getSource() == about) {</span>
+<span class="fc" id="L559">			JOptionPane.showMessageDialog(this,</span>
+<span class="fc" id="L560">					&quot;Four Row Solitaire was created and programmed by Matt Stephen.\n&quot;</span>
+							+ &quot;\nYou can modify this code in accordance with GPL v3.0.\n&quot;
+							+ &quot;\nTo check if there is a newer version, go to fourrow.sourceforge.net.&quot;,
+<span class="fc" id="L563">					&quot;About Game&quot;, JOptionPane.INFORMATION_MESSAGE);</span>
+<span class="pc bpc" id="L564" title="1 of 2 branches missed.">		} else if (e.getSource() == checkUpdate) {</span>
+			try {
+<span class="fc" id="L566">				Desktop.getDesktop().browse(new URI(&quot;https://sourceforge.net/projects/fourrow&quot;));</span>
+<span class="pc" id="L567">			} catch (Exception ex) {</span>
+<span class="nc" id="L568">				System.out.println(ex);</span>
+			}
+		}
+<span class="fc" id="L571">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Dec 3, 2017 1:29:15 AM)</div></body></html>

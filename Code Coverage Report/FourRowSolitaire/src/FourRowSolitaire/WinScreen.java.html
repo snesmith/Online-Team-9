@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>WinScreen.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 3, 2017 1:29:15 AM)</a> &gt; <a href="../../index.html" class="el_group">FourRowSolitaire</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">FourRowSolitaire</a> &gt; <span class="el_source">WinScreen.java</span></div><h1>WinScreen.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">/*</span>
+    This file is a part of Four Row Solitaire
+
+    Copyright (C) 2010 by Matt Stephen
+
+    Four Row Solitaire is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Four Row Solitaire is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with FourRowSolitaire.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package FourRowSolitaire;
+
+//import java.awt.Dialog;
+import java.awt.event.*;
+import java.io.File;
+import java.net.URL;
+import java.util.Random;
+import javax.sound.midi.*;
+import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
+
+/**
+ * Class: WinScreen
+ * 
+ * Description: The WinScreen class manages the win animation and sounds window.
+ * 
+ * @author Matt Stephen
+ */
+public class WinScreen extends JFrame {
+<span class="fc" id="L39">	SoundThread sound = null;</span>
+
+<span class="fc" id="L41">	public WinScreen(int animation, int sounds) {</span>
+<span class="fc" id="L42">		setUndecorated(true);</span>
+		// setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+<span class="fc" id="L44">		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);</span>
+<span class="fc" id="L45">		setFocusable(true);</span>
+
+		/*
+		 * For JDialog instead of JFrame, but the mouse listener doesn't work with
+		 * JDialog for some reason. setModalityType(Dialog.ModalityType.DOCUMENT_MODAL);
+		 */
+
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">		if (sounds == 1) {</span>
+<span class="fc" id="L53">			setSize(200, 200);</span>
+<span class="fc" id="L54">			sound = new SoundThread();</span>
+<span class="fc" id="L55">			sound.run();</span>
+		}
+
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">		if (animation == 1) {</span>
+<span class="fc" id="L59">			setSize(800, 600);</span>
+
+<span class="fc" id="L61">			FireworksDisplay fw = new FireworksDisplay(100, 200);</span>
+<span class="fc" id="L62">			add(fw);</span>
+<span class="fc" id="L63">			fw.restartDisplay();</span>
+<span class="fc" id="L64">			setLocationRelativeTo(null);</span>
+<span class="fc" id="L65">		} else {</span>
+<span class="nc" id="L66">			this.setLocation(0, 0);</span>
+<span class="nc" id="L67">			add(new JLabel(&quot;Click Here to Stop Music&quot;));</span>
+		}
+
+<span class="fc" id="L70">		setVisible(true);</span>
+
+<span class="fc" id="L72">		addMouseListener(new MouseInputAdapter() {</span>
+			public void mouseClicked(MouseEvent e) {
+<span class="pc bpc" id="L74" title="2 of 4 branches missed.">				if (sound != null &amp;&amp; sound.sequencer.isRunning()) {</span>
+<span class="fc" id="L75">					sound.sequencer.stop();</span>
+				}
+
+<span class="fc" id="L78">				WinScreen.this.dispose();</span>
+<span class="fc" id="L79">			}</span>
+		});
+
+<span class="fc" id="L82">		addFocusListener(new FocusAdapter() {</span>
+			public void focusLost(FocusEvent e) {
+<span class="fc" id="L84">				WinScreen.this.requestFocus();</span>
+<span class="fc" id="L85">			}</span>
+		});
+<span class="fc" id="L87">	}</span>
+
+<span class="fc" id="L89">	private class SoundThread extends Thread {</span>
+		public Sequencer sequencer;
+
+		public void run() {
+<span class="fc" id="L93">			String song = &quot;&quot;; // To hold choice</span>
+<span class="fc" id="L94">			Random gen = new Random();</span>
+
+			try {
+				// Doesn't work as a .jar
+<span class="fc" id="L98">				File songDir = new File(getClass().getResource(&quot;sounds/win/&quot;).toURI());</span>
+<span class="fc" id="L99">				String[] songs = songDir.list();</span>
+<span class="fc" id="L100">				boolean retry = true;</span>
+
+				do {
+<span class="fc" id="L103">					song = songs[gen.nextInt(songs.length)];</span>
+
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">					if (song.toLowerCase().contains(&quot;.mid&quot;)) {</span>
+<span class="fc" id="L106">						retry = false;</span>
+					}
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">				} while (retry);</span>
+<span class="pc" id="L109">			} catch (Exception ex) {</span>
+<span class="nc" id="L110">				int songInt = gen.nextInt(4);</span>
+
+<span class="nc bnc" id="L112" title="All 2 branches missed.">				if (songInt == 0) {</span>
+<span class="nc" id="L113">					song = &quot;celebration.mid&quot;;</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">				} else if (songInt == 1) {</span>
+<span class="nc" id="L115">					song = &quot;anotheronebitesthedust.mid&quot;;</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">				} else if (songInt == 2) {</span>
+<span class="nc" id="L117">					song = &quot;wearethechampions.mid&quot;;</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">				} else if (songInt == 3) {</span>
+<span class="nc" id="L119">					song = &quot;bluedabadee.mid&quot;;</span>
+				}
+			}
+
+<span class="fc" id="L123">			URL filelocation = getClass().getResource(&quot;sounds/win/&quot; + song);</span>
+
+			try {
+<span class="fc" id="L126">				Sequence sequence = MidiSystem.getSequence(filelocation);</span>
+<span class="fc" id="L127">				sequencer = MidiSystem.getSequencer();</span>
+<span class="fc" id="L128">				sequencer.open();</span>
+<span class="fc" id="L129">				sequencer.setSequence(sequence);</span>
+<span class="fc" id="L130">				sequencer.setLoopCount(0);</span>
+<span class="fc" id="L131">				sequencer.start();</span>
+<span class="pc" id="L132">			} catch (Exception ex) {</span>
+<span class="nc" id="L133">				System.err.println(&quot;Error opening win sound file.&quot;);</span>
+			}
+<span class="fc" id="L135">		}</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Dec 3, 2017 1:29:15 AM)</div></body></html>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CardStack.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 3, 2017 1:29:15 AM)</a> &gt; <a href="../../index.html" class="el_group">FourRowSolitaire</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">FourRowSolitaire</a> &gt; <span class="el_source">CardStack.java</span></div><h1>CardStack.java</h1><pre class="source lang-java linenums">/*
+    This file is a part of Four Row Solitaire
+
+    Copyright (C) 2010 by Matt Stephen
+
+    Four Row Solitaire is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Four Row Solitaire is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with FourRowSolitaire.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package FourRowSolitaire;
+
+import java.awt.*;
+import java.util.Vector;
+import javax.swing.JLayeredPane;
+
+/**
+ * Class: CardStack
+ *
+ * Description: The Cardstack class manages a location for cards to be placed.
+ *
+ * @author Matt Stephen
+ */
+public class CardStack extends JLayeredPane {
+<span class="fc" id="L34">	private Vector&lt;Card&gt; cards = new Vector&lt;Card&gt;();</span>
+
+<span class="fc" id="L36">	public CardStack() {</span>
+<span class="fc" id="L37">	}</span>
+
+	// For starting the game
+	public void addCard(Card card) {
+<span class="fc" id="L41">		cards.add(card);</span>
+<span class="fc" id="L42">		card.setBounds(0, 0, 72, 96);</span>
+<span class="fc" id="L43">		add(card, 0);</span>
+<span class="fc" id="L44">	}</span>
+
+	public void addStack(CardStack stack) {
+<span class="nc bnc" id="L47" title="All 2 branches missed.">		for (int i = stack.length(); i &gt; 0; i--) {</span>
+<span class="nc" id="L48">			Card card = stack.pop();</span>
+<span class="nc" id="L49">			addCard(card);</span>
+		}
+<span class="nc" id="L51">	}</span>
+
+	public Card push(Card card) {
+<span class="fc" id="L54">		cards.add(card);</span>
+<span class="fc" id="L55">		card.setBounds(0, 0, 72, 96);</span>
+<span class="fc" id="L56">		add(card, 0);</span>
+<span class="fc" id="L57">		return card;</span>
+	}
+
+	public CardStack push(CardStack stack) {
+<span class="fc bfc" id="L61" title="All 2 branches covered.">		while (!stack.isEmpty()) {</span>
+<span class="fc" id="L62">			Card card = stack.pop();</span>
+<span class="fc" id="L63">			push(card);</span>
+		}
+
+<span class="fc" id="L66">		return stack; // returns empty stack</span>
+	}
+
+	public synchronized Card pop() {
+<span class="fc" id="L70">		Card card = peek();</span>
+
+<span class="fc" id="L72">		this.remove(card);</span>
+<span class="fc" id="L73">		cards.remove(cards.size() - 1);</span>
+
+<span class="fc" id="L75">		return card;</span>
+	}
+
+	public CardStack pop(CardStack stack) {
+		// Temporary reverse pop of entire stack transfer
+<span class="nc" id="L80">		CardStack temp = new CardStack();</span>
+
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		while (!stack.isEmpty()) {</span>
+<span class="nc" id="L83">			Card card = stack.pop();</span>
+<span class="nc" id="L84">			temp.push(card);</span>
+<span class="nc" id="L85">			this.remove(card);</span>
+		}
+
+<span class="nc" id="L88">		return temp;</span>
+	}
+
+	public synchronized Card peek() {
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		if (cards.isEmpty()) {</span>
+<span class="nc" id="L93">			return null;</span>
+		}
+
+<span class="fc" id="L96">		return cards.lastElement();</span>
+	}
+
+	public boolean isEmpty() {
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		return cards.size() == 0;</span>
+	}
+
+	public int length() {
+<span class="fc" id="L104">		return cards.size();</span>
+	}
+
+	public synchronized int search(Card card) {
+<span class="fc" id="L108">		int i = cards.lastIndexOf(card);</span>
+
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (i &gt;= 0) {</span>
+<span class="fc" id="L111">			return cards.size() - i;</span>
+		}
+
+<span class="nc" id="L114">		return -1;</span>
+	}
+
+	public Card getCardAtLocation(int index) {
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (index &lt; cards.size()) {</span>
+<span class="fc" id="L119">			return cards.get(index);</span>
+		}
+
+<span class="nc" id="L122">		return null;</span>
+	}
+
+	public Card getCardAtLocation(Point p) {
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (cards.isEmpty()) {</span>
+<span class="nc" id="L127">			return null;</span>
+		}
+
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		if (isValidClick(p)) {</span>
+<span class="fc" id="L131">			int y = (int) p.getY();</span>
+
+			int index;
+
+<span class="fc bfc" id="L135" title="All 2 branches covered.">			if (y &gt; 25 * (cards.size() - 1)) {</span>
+<span class="fc" id="L136">				index = cards.size() - 1;</span>
+<span class="fc" id="L137">			} else {</span>
+<span class="fc" id="L138">				index = y / 25;</span>
+			}
+
+<span class="fc bfc" id="L141" title="All 2 branches covered.">			if (isValidCard(index)) {</span>
+<span class="fc" id="L142">				return cards.get(index);</span>
+			}
+		}
+
+<span class="fc" id="L146">		return null;</span>
+	}
+
+	// Verifies that the card is a part of a valid stack
+	private boolean isValidCard(int index) {
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (index &gt;= cards.size()) {</span>
+<span class="nc" id="L152">			return false;</span>
+		}
+
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		for (int i = index; i &lt; cards.size() - 1; i++) {</span>
+			// Cards are not opposite colors or decreasing in value correctly
+<span class="fc bfc" id="L157" title="All 2 branches covered.">			if (cards.get(i).getColor() == cards.get(i + 1).getColor()</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">					|| cards.get(i).getNumber() != (cards.get(i + 1).getNumber() + 1)) {</span>
+<span class="fc" id="L159">				return false;</span>
+			}
+		}
+
+<span class="fc" id="L163">		return true;</span>
+	}
+
+	// Checks if clicked area is defined on a card in the stack
+	private boolean isValidClick(Point p) {
+<span class="fc" id="L168">		int y = (int) p.getY();</span>
+
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		if (!isEmpty()) {</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">			if (y &gt; 25 * (cards.size() - 1) + cards.lastElement().getBounds().getHeight()) {</span>
+<span class="fc" id="L172">				return false;</span>
+			}
+		}
+
+<span class="fc" id="L176">		return true;</span>
+	}
+
+	public CardStack getStack(Card card) {
+<span class="fc" id="L180">		CardStack temp = new CardStack();</span>
+<span class="fc" id="L181">		int index = search(card);</span>
+
+<span class="fc bfc" id="L183" title="All 2 branches covered.">		for (int i = 0; i &lt; index; i++) {</span>
+<span class="fc" id="L184">			temp.push(getCardAtLocation(cards.size() - i - 1).clone());</span>
+<span class="fc" id="L185">			getCardAtLocation(cards.size() - i - 1).highlight();</span>
+		}
+
+<span class="fc" id="L188">		return temp;</span>
+	}
+
+	public CardStack getStack(int numCards) {
+<span class="nc" id="L192">		CardStack temp = new CardStack();</span>
+<span class="nc" id="L193">		int index = length() - numCards;</span>
+
+<span class="nc bnc" id="L195" title="All 2 branches missed.">		for (int i = length(); i &gt; index; i--) {</span>
+<span class="nc" id="L196">			temp.push(getCardAtLocation(cards.size() - i - 1).clone());</span>
+<span class="nc" id="L197">			getCardAtLocation(cards.size() - i - 1).highlight();</span>
+		}
+
+<span class="nc" id="L200">		return temp;</span>
+	}
+
+	public boolean isValidMove(Card card) {
+<span class="fc bfc" id="L204" title="All 4 branches covered.">		if (isEmpty() &amp;&amp; card.getNumber() == Card.KING) {</span>
+<span class="fc" id="L205">			return true;</span>
+<span class="pc bpc" id="L206" title="1 of 6 branches missed.">		} else if (!isEmpty() &amp;&amp; card.getColor() != peek().getColor() &amp;&amp; card.getNumber() == (peek().getNumber() - 1)) {</span>
+<span class="fc" id="L207">			return true;</span>
+		}
+
+<span class="fc" id="L210">		return false;</span>
+	}
+
+	public boolean isValidMove(CardStack stack) {
+<span class="nc" id="L214">		return isValidMove(stack.peek());</span>
+	}
+
+	public Card getBottom() {
+<span class="nc" id="L218">		return cards.firstElement();</span>
+	}
+
+	public CardStack getAvailableCards() {
+<span class="pc bpc" id="L222" title="1 of 4 branches missed.">		if (!isEmpty() &amp;&amp; (this instanceof Column)) {</span>
+<span class="fc" id="L223">			CardStack temp = new CardStack();</span>
+<span class="fc" id="L224">			boolean cardsMatch = true;</span>
+<span class="fc" id="L225">			int index = length() - 1;</span>
+
+<span class="fc" id="L227">			temp.addCard(cards.get(index));</span>
+
+			do {
+<span class="fc" id="L230">				index--;</span>
+
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">				if (index &gt;= 0) {</span>
+<span class="fc" id="L233">					Card card = cards.get(index);</span>
+
+<span class="pc bpc" id="L235" title="1 of 4 branches missed.">					if (card.getColor() != temp.peek().getColor() &amp;&amp; card.getNumber() == temp.peek().getNumber() + 1) {</span>
+<span class="nc" id="L236">						temp.addCard(card);</span>
+<span class="nc" id="L237">					} else {</span>
+<span class="fc" id="L238">						cardsMatch = false;</span>
+					}
+<span class="fc" id="L240">				} else {</span>
+<span class="nc" id="L241">					cardsMatch = false;</span>
+				}
+
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">			} while (cardsMatch);</span>
+
+<span class="fc" id="L246">			return temp;</span>
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">		} else if (!isEmpty()) // is the discardPile or single cell</span>
+		{
+<span class="fc" id="L249">			CardStack temp = new CardStack();</span>
+<span class="fc" id="L250">			temp.addCard(peek());</span>
+
+<span class="fc" id="L252">			return temp;</span>
+		}
+
+<span class="nc" id="L255">		return null; // for deck and ace piles</span>
+	}
+
+	public void paint(Graphics g) {
+<span class="fc" id="L259">		super.paint(g);</span>
+
+<span class="fc bfc" id="L261" title="All 2 branches covered.">		if (!isEmpty()) {</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">			for (int i = 0; i &lt; cards.size(); i++) {</span>
+<span class="fc" id="L263">				Image image = cards.get(i).getImage();</span>
+<span class="fc" id="L264">				g.drawImage(image, 0, i * 25, null);</span>
+			}
+		}
+<span class="fc" id="L267">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Dec 3, 2017 1:29:15 AM)</div></body></html>

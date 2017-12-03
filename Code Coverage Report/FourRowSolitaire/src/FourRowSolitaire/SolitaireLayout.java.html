@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SolitaireLayout.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 3, 2017 1:29:15 AM)</a> &gt; <a href="../../index.html" class="el_group">FourRowSolitaire</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">FourRowSolitaire</a> &gt; <span class="el_source">SolitaireLayout.java</span></div><h1>SolitaireLayout.java</h1><pre class="source lang-java linenums">/*
+    This file is a part of Four Row Solitaire
+
+    Copyright (C) 2010 by Matt Stephen
+
+    Four Row Solitaire is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Four Row Solitaire is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with FourRowSolitaire.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package FourRowSolitaire;
+
+import java.awt.*;
+
+/**
+ * Class: SolitaireLayout
+ *
+ * Description: The SolitaireLayout class manages the layout for the Solitaire
+ * board.
+ *
+ * @author Matt Stephen
+ */
+public class SolitaireLayout implements LayoutManager {
+	public static final String COLUMN_ONE = &quot;Column One&quot;;
+	public static final String COLUMN_TWO = &quot;Column Two&quot;;
+	public static final String COLUMN_THREE = &quot;Column Three&quot;;
+	public static final String COLUMN_FOUR = &quot;Column Four&quot;;
+
+	public static final String SPADES_ACE_PILE = &quot;Spaces Ace Pile&quot;;
+	public static final String CLUBS_ACE_PILE = &quot;Clubs Ace Pile&quot;;
+	public static final String DIAMONDS_ACE_PILE = &quot;Diamonds Ace Pile&quot;;
+	public static final String HEARTS_ACE_PILE = &quot;Hears Ace Pile&quot;;
+
+	public static final String DISCARD_PILE = &quot;Discard Pile&quot;;
+	public static final String DECK = &quot;Deck&quot;;
+
+	public static final String CELL_ONE = &quot;Cell One&quot;;
+	public static final String CELL_TWO = &quot;Cell Two&quot;;
+	public static final String CELL_THREE = &quot;Cell Three&quot;;
+	public static final String CELL_FOUR = &quot;Cell Four&quot;;
+
+	private Component colOne;
+	private Component colTwo;
+	private Component colThree;
+	private Component colFour;
+
+	private Component aceSpades;
+	private Component aceClubs;
+	private Component aceDiamonds;
+	private Component aceHearts;
+
+	private Component discardPile;
+	private Component deck;
+
+	private Component cellOne;
+	private Component cellTwo;
+	private Component cellThree;
+	private Component cellFour;
+
+<span class="fc" id="L69">	public SolitaireLayout() {</span>
+<span class="fc" id="L70">	}</span>
+
+	public void addLayoutComponent(String name, Component comp) {
+<span class="fc bfc" id="L73" title="All 2 branches covered.">		if (name.equals(COLUMN_ONE)) {</span>
+<span class="fc" id="L74">			colOne = comp;</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">		} else if (name.equals(COLUMN_TWO)) {</span>
+<span class="fc" id="L76">			colTwo = comp;</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">		} else if (name.equals(COLUMN_THREE)) {</span>
+<span class="fc" id="L78">			colThree = comp;</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">		} else if (name.equals(COLUMN_FOUR)) {</span>
+<span class="fc" id="L80">			colFour = comp;</span>
+<span class="fc" id="L81">		}</span>
+
+<span class="fc bfc" id="L83" title="All 2 branches covered.">		else if (name.equals(SPADES_ACE_PILE)) {</span>
+<span class="fc" id="L84">			aceSpades = comp;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">		} else if (name.equals(CLUBS_ACE_PILE)) {</span>
+<span class="fc" id="L86">			aceClubs = comp;</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">		} else if (name.equals(DIAMONDS_ACE_PILE)) {</span>
+<span class="fc" id="L88">			aceDiamonds = comp;</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		} else if (name.equals(HEARTS_ACE_PILE)) {</span>
+<span class="fc" id="L90">			aceHearts = comp;</span>
+<span class="fc" id="L91">		}</span>
+
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		else if (name.equals(DISCARD_PILE)) {</span>
+<span class="fc" id="L94">			discardPile = comp;</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">		} else if (name.equals(DECK)) {</span>
+<span class="fc" id="L96">			deck = comp;</span>
+<span class="fc" id="L97">		}</span>
+
+<span class="fc bfc" id="L99" title="All 2 branches covered.">		else if (name.equals(CELL_ONE)) {</span>
+<span class="fc" id="L100">			cellOne = comp;</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		} else if (name.equals(CELL_TWO)) {</span>
+<span class="fc" id="L102">			cellTwo = comp;</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">		} else if (name.equals(CELL_THREE)) {</span>
+<span class="fc" id="L104">			cellThree = comp;</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		} else if (name.equals(CELL_FOUR)) {</span>
+<span class="fc" id="L106">			cellFour = comp;</span>
+		}
+<span class="fc" id="L108">	}</span>
+
+	public void removeLayoutComponent(Component comp) {
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (colOne == comp) {</span>
+<span class="nc" id="L112">			colOne = null;</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		} else if (colTwo == comp) {</span>
+<span class="nc" id="L114">			colTwo = null;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		} else if (colThree == comp) {</span>
+<span class="nc" id="L116">			colThree = null;</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		} else if (colFour == comp) {</span>
+<span class="nc" id="L118">			colFour = null;</span>
+<span class="nc" id="L119">		}</span>
+
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		else if (aceSpades == comp) {</span>
+<span class="nc" id="L122">			aceSpades = null;</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		} else if (aceClubs == comp) {</span>
+<span class="nc" id="L124">			aceClubs = null;</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		} else if (aceDiamonds == comp) {</span>
+<span class="nc" id="L126">			aceDiamonds = null;</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		} else if (aceHearts == comp) {</span>
+<span class="nc" id="L128">			aceHearts = null;</span>
+<span class="nc" id="L129">		}</span>
+
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		else if (discardPile == comp) {</span>
+<span class="nc" id="L132">			discardPile = null;</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		} else if (deck == comp) {</span>
+<span class="nc" id="L134">			deck = null;</span>
+<span class="nc" id="L135">		}</span>
+
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		else if (cellOne == comp) {</span>
+<span class="nc" id="L138">			cellOne = null;</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		} else if (cellTwo == comp) {</span>
+<span class="nc" id="L140">			cellTwo = null;</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		} else if (cellThree == comp) {</span>
+<span class="nc" id="L142">			cellThree = null;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		} else if (cellFour == comp) {</span>
+<span class="nc" id="L144">			cellFour = null;</span>
+		}
+<span class="nc" id="L146">	}</span>
+
+	public Dimension preferredLayoutSize(Container parent) {
+<span class="nc" id="L149">		throw new UnsupportedOperationException(&quot;Not supported yet.&quot;);</span>
+	}
+
+	public Dimension minimumLayoutSize(Container parent) {
+<span class="nc" id="L153">		throw new UnsupportedOperationException(&quot;Not supported yet.&quot;);</span>
+	}
+
+	public void layoutContainer(Container parent) {
+		Component comp;
+
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		if ((comp = colOne) != null) {</span>
+<span class="fc" id="L160">			comp.setBounds(81, 115, 72, 800);</span>
+		}
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if ((comp = colTwo) != null) {</span>
+<span class="fc" id="L163">			comp.setBounds(164, 115, 72, 800);</span>
+		}
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">		if ((comp = colThree) != null) {</span>
+<span class="fc" id="L166">			comp.setBounds(247, 115, 72, 800);</span>
+		}
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if ((comp = colFour) != null) {</span>
+<span class="fc" id="L169">			comp.setBounds(330, 115, 72, 800);</span>
+		}
+
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">		if ((comp = aceSpades) != null) {</span>
+<span class="fc" id="L173">			comp.setBounds(568, 3, 72, 96);</span>
+		}
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">		if ((comp = aceClubs) != null) {</span>
+<span class="fc" id="L176">			comp.setBounds(650, 3, 72, 96);</span>
+		}
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if ((comp = aceDiamonds) != null) {</span>
+<span class="fc" id="L179">			comp.setBounds(568, 110, 72, 96);</span>
+		}
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">		if ((comp = aceHearts) != null) {</span>
+<span class="fc" id="L182">			comp.setBounds(650, 110, 72, 96);</span>
+		}
+
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		if ((comp = discardPile) != null) {</span>
+<span class="fc" id="L186">			comp.setBounds(650, 318, 72, 96);</span>
+		}
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">		if ((comp = deck) != null) {</span>
+<span class="fc" id="L189">			comp.setBounds(568, 318, 72, 96);</span>
+		}
+
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">		if ((comp = cellOne) != null) {</span>
+<span class="fc" id="L193">			comp.setBounds(81, 3, 72, 96);</span>
+		}
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">		if ((comp = cellTwo) != null) {</span>
+<span class="fc" id="L196">			comp.setBounds(164, 3, 72, 96);</span>
+		}
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">		if ((comp = cellThree) != null) {</span>
+<span class="fc" id="L199">			comp.setBounds(247, 3, 72, 96);</span>
+		}
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">		if ((comp = cellFour) != null) {</span>
+<span class="fc" id="L202">			comp.setBounds(330, 3, 72, 96);</span>
+		}
+<span class="fc" id="L204">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Dec 3, 2017 1:29:15 AM)</div></body></html>

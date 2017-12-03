@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Card.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 3, 2017 1:29:15 AM)</a> &gt; <a href="../../index.html" class="el_group">FourRowSolitaire</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">FourRowSolitaire</a> &gt; <span class="el_source">Card.java</span></div><h1>Card.java</h1><pre class="source lang-java linenums">/*
+    This file is a part of Four Row Solitaire
+
+    Copyright (C) 2010 by Matt Stephen
+
+    Four Row Solitaire is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Four Row Solitaire is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with FourRowSolitaire.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package FourRowSolitaire;
+
+import java.awt.*;
+import java.awt.image.*;
+import java.io.*;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import javax.swing.JComponent;
+
+/**
+ * Class: Card
+ *
+ * Description: The Card class holds information pertaining to 1 out of the 52
+ * cards per deck.
+ *
+ * @author Matt Stephen
+ */
+public class Card extends JComponent {
+	public static final String SPADES_SUIT = &quot;Spades&quot;;
+	public static final String CLUBS_SUIT = &quot;Clubs&quot;;
+	public static final String HEARTS_SUIT = &quot;Hearts&quot;;
+	public static final String DIAMONDS_SUIT = &quot;Diamonds&quot;;
+	public static final String INVALID_SUIT = &quot;Invalid Suit&quot;;
+
+	public static final int ACE = 1;
+	public static final int TWO = 2;
+	public static final int THREE = 3;
+	public static final int FOUR = 4;
+	public static final int FIVE = 5;
+	public static final int SIX = 6;
+	public static final int SEVEN = 7;
+	public static final int EIGHT = 8;
+	public static final int NINE = 9;
+	public static final int TEN = 10;
+	public static final int JACK = 11;
+	public static final int QUEEN = 12;
+	public static final int KING = 13;
+	public static final int INVALID_NUMBER = -1;
+
+	private String cardSuit;
+	private int cardNumber;
+	private int fullCardNumber; // 1 - 52
+	private int cardColor; // 0 = black, red = 1
+
+	private int deckNumber;
+
+	private BufferedImage image; // Takes either card back or front
+
+	private String cardBack; // The back design
+	private String cardImageString; // The card front
+	private String cardHighlighted; // The highlighted card front
+
+<span class="fc" id="L72">	private boolean faceUp = false;</span>
+<span class="fc" id="L73">	private boolean highlighted = false;</span>
+
+<span class="fc" id="L75">	private String location = &quot;&quot;; // To notify the discard pile of moves from the deck</span>
+
+<span class="fc" id="L77">	public Card(String suit, int number, int deckNumber, int fullNumber) {</span>
+<span class="pc bpc" id="L78" title="3 of 6 branches missed.">		if (isValidSuit(suit) &amp;&amp; (number &gt;= 1 &amp;&amp; number &lt;= 13)) {</span>
+<span class="fc" id="L79">			cardSuit = suit;</span>
+<span class="fc" id="L80">			cardNumber = number;</span>
+<span class="fc" id="L81">			fullCardNumber = fullNumber;</span>
+<span class="fc" id="L82">			this.deckNumber = deckNumber;</span>
+
+<span class="pc bpc" id="L84" title="1 of 4 branches missed.">			if (deckNumber &gt;= 1 &amp;&amp; deckNumber &lt;= ChangeAppearance.NUM_DECKS) {</span>
+<span class="fc" id="L85">				cardBack = &quot;images/cardbacks/cardback&quot; + deckNumber + &quot;.png&quot;;</span>
+<span class="fc" id="L86">			} else {</span>
+<span class="fc" id="L87">				cardBack = &quot;images/cardbacks/cardback3.png&quot;;</span>
+			}
+
+<span class="fc" id="L90">			initializeCardImageString();</span>
+<span class="fc" id="L91">		} else {</span>
+<span class="nc" id="L92">			cardSuit = INVALID_SUIT;</span>
+<span class="nc" id="L93">			cardNumber = INVALID_NUMBER;</span>
+
+<span class="nc" id="L95">			cardImageString = &quot;images/invalidcard.png&quot;;</span>
+		}
+
+<span class="fc" id="L98">		setFaceUp();</span>
+<span class="fc" id="L99">	}</span>
+
+	public void highlight() {
+<span class="fc" id="L102">		highlighted = true;</span>
+
+		try {
+<span class="fc" id="L105">			URL imageURL = this.getClass().getResource(cardHighlighted);</span>
+
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">			if (imageURL != null) {</span>
+<span class="fc" id="L108">				image = ImageIO.read(imageURL);</span>
+			}
+<span class="pc" id="L110">		} catch (IOException ex) {</span>
+<span class="nc" id="L111">			System.err.println(&quot;Error in creating highlighted card face image.&quot;);</span>
+		}
+
+<span class="fc" id="L114">		repaint();</span>
+<span class="fc" id="L115">	}</span>
+
+	public void unhighlight() {
+<span class="fc" id="L118">		highlighted = false;</span>
+
+<span class="fc" id="L120">		setFaceUp();</span>
+<span class="fc" id="L121">	}</span>
+
+	public boolean isHighlighted() {
+<span class="nc" id="L124">		return highlighted;</span>
+	}
+
+	public void setFaceUp() {
+<span class="fc" id="L128">		faceUp = true;</span>
+
+		try {
+<span class="fc" id="L131">			URL imageURL = this.getClass().getResource(cardImageString);</span>
+
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">			if (imageURL != null) {</span>
+<span class="fc" id="L134">				image = ImageIO.read(imageURL);</span>
+			}
+<span class="pc" id="L136">		} catch (IOException ex) {</span>
+<span class="nc" id="L137">			System.err.println(&quot;Error in creating card face image.&quot;);</span>
+		}
+<span class="fc" id="L139">	}</span>
+
+	public void setFaceDown() {
+<span class="fc" id="L142">		faceUp = false;</span>
+
+		try {
+<span class="fc" id="L145">			URL imageURL = this.getClass().getResource(cardBack);</span>
+
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">			if (imageURL != null) {</span>
+<span class="fc" id="L148">				image = ImageIO.read(imageURL);</span>
+			}
+<span class="pc" id="L150">		} catch (IOException ex) {</span>
+<span class="nc" id="L151">			System.err.println(&quot;Error in creating card back image.&quot;);</span>
+		}
+<span class="fc" id="L153">	}</span>
+
+	public boolean isFaceUp() {
+<span class="nc" id="L156">		return faceUp;</span>
+	}
+
+	public boolean isValidSuit(String suit) {
+<span class="fc bfc" id="L160" title="All 6 branches covered.">		if (suit.equals(SPADES_SUIT) || suit.equals(DIAMONDS_SUIT) || suit.equals(HEARTS_SUIT)</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">				|| suit.equals(CLUBS_SUIT)) {</span>
+<span class="fc" id="L162">			return true;</span>
+		}
+
+<span class="nc" id="L165">		return false;</span>
+	}
+
+	private void initializeCardImageString() {
+<span class="fc" id="L169">		cardImageString = &quot;images/cardfaces/&quot;;</span>
+<span class="fc" id="L170">		cardHighlighted = &quot;images/highlightedfaces/&quot;;</span>
+
+<span class="fc bfc" id="L172" title="All 2 branches covered.">		if (cardSuit.equals(SPADES_SUIT)) {</span>
+<span class="fc" id="L173">			cardImageString += &quot;s&quot;;</span>
+<span class="fc" id="L174">			cardHighlighted += &quot;s&quot;;</span>
+<span class="fc" id="L175">			cardColor = 0;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		} else if (cardSuit.equals(CLUBS_SUIT)) {</span>
+<span class="fc" id="L177">			cardImageString += &quot;c&quot;;</span>
+<span class="fc" id="L178">			cardHighlighted += &quot;c&quot;;</span>
+<span class="fc" id="L179">			cardColor = 0;</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">		} else if (cardSuit.equals(DIAMONDS_SUIT)) {</span>
+<span class="fc" id="L181">			cardImageString += &quot;d&quot;;</span>
+<span class="fc" id="L182">			cardHighlighted += &quot;d&quot;;</span>
+<span class="fc" id="L183">			cardColor = 1;</span>
+<span class="fc" id="L184">		} else // if(cardSuit.equals(HEARTS_SUIT))</span>
+		{
+<span class="fc" id="L186">			cardImageString += &quot;h&quot;;</span>
+<span class="fc" id="L187">			cardHighlighted += &quot;h&quot;;</span>
+<span class="fc" id="L188">			cardColor = 1;</span>
+		}
+
+<span class="fc bfc" id="L191" title="All 2 branches covered.">		if (cardNumber == ACE) {</span>
+<span class="fc" id="L192">			cardImageString += &quot;Ace&quot;;</span>
+<span class="fc" id="L193">			cardHighlighted += &quot;Ace&quot;;</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		} else if (cardNumber == TWO) {</span>
+<span class="fc" id="L195">			cardImageString += &quot;Two&quot;;</span>
+<span class="fc" id="L196">			cardHighlighted += &quot;Two&quot;;</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">		} else if (cardNumber == THREE) {</span>
+<span class="fc" id="L198">			cardImageString += &quot;Three&quot;;</span>
+<span class="fc" id="L199">			cardHighlighted += &quot;Three&quot;;</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">		} else if (cardNumber == FOUR) {</span>
+<span class="fc" id="L201">			cardImageString += &quot;Four&quot;;</span>
+<span class="fc" id="L202">			cardHighlighted += &quot;Four&quot;;</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		} else if (cardNumber == FIVE) {</span>
+<span class="fc" id="L204">			cardImageString += &quot;Five&quot;;</span>
+<span class="fc" id="L205">			cardHighlighted += &quot;Five&quot;;</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">		} else if (cardNumber == SIX) {</span>
+<span class="fc" id="L207">			cardImageString += &quot;Six&quot;;</span>
+<span class="fc" id="L208">			cardHighlighted += &quot;Six&quot;;</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">		} else if (cardNumber == SEVEN) {</span>
+<span class="fc" id="L210">			cardImageString += &quot;Seven&quot;;</span>
+<span class="fc" id="L211">			cardHighlighted += &quot;Seven&quot;;</span>
+<span class="fc bfc" id="L212" title="All 2 branches covered.">		} else if (cardNumber == EIGHT) {</span>
+<span class="fc" id="L213">			cardImageString += &quot;Eight&quot;;</span>
+<span class="fc" id="L214">			cardHighlighted += &quot;Eight&quot;;</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">		} else if (cardNumber == NINE) {</span>
+<span class="fc" id="L216">			cardImageString += &quot;Nine&quot;;</span>
+<span class="fc" id="L217">			cardHighlighted += &quot;Nine&quot;;</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">		} else if (cardNumber == TEN) {</span>
+<span class="fc" id="L219">			cardImageString += &quot;Ten&quot;;</span>
+<span class="fc" id="L220">			cardHighlighted += &quot;Ten&quot;;</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">		} else if (cardNumber == JACK) {</span>
+<span class="fc" id="L222">			cardImageString += &quot;Jack&quot;;</span>
+<span class="fc" id="L223">			cardHighlighted += &quot;Jack&quot;;</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">		} else if (cardNumber == QUEEN) {</span>
+<span class="fc" id="L225">			cardImageString += &quot;Queen&quot;;</span>
+<span class="fc" id="L226">			cardHighlighted += &quot;Queen&quot;;</span>
+<span class="fc" id="L227">		} else // if(cardNumber == KING)</span>
+		{
+<span class="fc" id="L229">			cardImageString += &quot;King&quot;;</span>
+<span class="fc" id="L230">			cardHighlighted += &quot;King&quot;;</span>
+		}
+
+<span class="fc" id="L233">		cardImageString += &quot;.png&quot;;</span>
+<span class="fc" id="L234">		cardHighlighted += &quot;H.png&quot;;</span>
+<span class="fc" id="L235">	}</span>
+
+	public BufferedImage getImage() {
+<span class="fc" id="L238">		return image;</span>
+	}
+
+	public int getNumber() {
+<span class="fc" id="L242">		return cardNumber;</span>
+	}
+
+	public String getSuit() {
+<span class="fc" id="L246">		return cardSuit;</span>
+	}
+
+	public int getColor() {
+<span class="fc" id="L250">		return cardColor;</span>
+	}
+
+	public int getFullNumber() {
+<span class="fc" id="L254">		return fullCardNumber;</span>
+	}
+
+	public String getSource() {
+<span class="fc" id="L258">		return location;</span>
+	}
+
+	public void setSource(String source) {
+<span class="fc" id="L262">		location = source;</span>
+<span class="fc" id="L263">	}</span>
+
+	protected void paintComponent(Graphics g) {
+<span class="fc" id="L266">		super.paintComponent(g);</span>
+<span class="fc" id="L267">		g.drawImage(image, 0, 0, null);</span>
+<span class="fc" id="L268">	}</span>
+
+	public Card clone() {
+<span class="fc" id="L271">		Card card = new Card(cardSuit, cardNumber, deckNumber, fullCardNumber);</span>
+<span class="fc" id="L272">		return card;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Dec 3, 2017 1:29:15 AM)</div></body></html>

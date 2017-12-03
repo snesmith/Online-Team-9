@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CardMoveTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 3, 2017 1:29:15 AM)</a> &gt; <a href="../../index.html" class="el_group">FourRowSolitaire</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">test</a> &gt; <span class="el_source">CardMoveTest.java</span></div><h1>CardMoveTest.java</h1><pre class="source lang-java linenums">package test;
+
+import static org.junit.Assert.*;
+
+import java.util.LinkedList;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import FourRowSolitaire.AcePile;
+import FourRowSolitaire.Card;
+import FourRowSolitaire.CardStack;
+import FourRowSolitaire.Column;
+import FourRowSolitaire.Deck;
+import FourRowSolitaire.SingleCell;
+/*
+ * Testing validMove() methods of:
+ * SingleCell.java
+ * Column.java
+ * AcePile.java
+ * CardStack.java
+ * 
+ */
+<span class="fc" id="L27">public class CardMoveTest {</span>
+	Deck testDeck;
+	LinkedList&lt;Card&gt; deckCards;
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+<span class="fc" id="L33">	}</span>
+
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+<span class="fc" id="L37">	}</span>
+
+	@Before
+	public void setUp() throws Exception {
+		// set up a new deck for testing
+<span class="fc" id="L42">		testDeck = new Deck(1, true);</span>
+<span class="fc" id="L43">		deckCards = testDeck.getDeck();</span>
+		
+<span class="fc" id="L45">	}</span>
+
+	@After
+	public void tearDown() throws Exception {
+<span class="fc" id="L49">	}</span>
+
+	@Test
+	public void testAcePile() {
+
+		// create the ace pile in the suite hearts
+<span class="fc" id="L55">		AcePile heartAcePile = new AcePile(&quot;Hearts&quot;);</span>
+		
+		// test if we can add the ace of spades
+<span class="fc" id="L58">		assertFalse(heartAcePile.isValidMove(deckCards.get(1)));</span>
+		
+		// test if we can add the two of hearts
+<span class="fc" id="L61">		assertFalse(heartAcePile.isValidMove(deckCards.get(40)));</span>
+		
+		// test if we can add the ace of hearts
+<span class="fc" id="L64">		assertTrue(heartAcePile.isValidMove(deckCards.get(39)));</span>
+		
+		
+		// add the Ace of Hearts to the deck
+<span class="fc" id="L68">		assertEquals(deckCards.get(39), heartAcePile.push(deckCards.get(39)));</span>
+		
+		// check if we can add the 2 of hearts
+<span class="fc" id="L71">		assertTrue(heartAcePile.isValidMove(deckCards.get(40)));</span>
+		
+		// even though we checked the 2 of hearts, we didn't add it, so
+		// check if we can't move the 3 of hearts
+<span class="fc" id="L75">		assertFalse(heartAcePile.isValidMove(deckCards.get(41)));</span>
+		
+		// add the 2 of hearts then check if we can add 3 of hearts
+<span class="fc" id="L78">		assertEquals(deckCards.get(40), heartAcePile.push(deckCards.get(40)));</span>
+<span class="fc" id="L79">		assertTrue(heartAcePile.isValidMove(deckCards.get(41)));</span>
+		
+		// check if we can add 3 of spades
+<span class="fc" id="L82">		assertFalse(heartAcePile.isValidMove(deckCards.get(3)));</span>
+<span class="fc" id="L83">	}</span>
+	
+	@Test
+	public void testSingleCell() {
+		
+		// create a single cell 
+<span class="fc" id="L89">		SingleCell testSingle = new SingleCell();</span>
+		
+		// can we add a card?
+<span class="fc" id="L92">		assertTrue(testSingle.isValidMove(deckCards.get(1)));</span>
+		
+		// add a card
+<span class="fc" id="L95">		assertEquals(deckCards.get(1), testSingle.push(deckCards.get(1)));</span>
+		
+		// we shouldn't be able to add any cards now
+<span class="fc" id="L98">		assertFalse(testSingle.isValidMove(deckCards.get(2)));</span>
+		
+		// can we add a stack?
+		// create a card stack
+<span class="fc" id="L102">		CardStack testStack = new CardStack();</span>
+<span class="fc" id="L103">		testStack.push(deckCards.get(12));</span>
+<span class="fc" id="L104">		testStack.push(deckCards.get(37));</span>
+<span class="fc" id="L105">		assertFalse(testSingle.isValidMove(testStack));</span>
+		
+<span class="fc" id="L107">	}</span>
+	
+	// card stacks are stacks of properly organized cards
+	// that we've assembled inside the columns
+	@Test
+	public void testCardStack() {
+		
+		// create a card stack
+<span class="fc" id="L115">		CardStack testStack = new CardStack();</span>
+		
+		// test if we can place a non-king card onto the empty stack
+<span class="fc" id="L118">		assertFalse(testStack.isValidMove(deckCards.get(1)));</span>
+		
+		// test if we can place a king onto an empty stack
+		// remember testStack starts at 0 not 1, so kings are at position 12
+<span class="fc" id="L122">		assertTrue(testStack.isValidMove(deckCards.get(12)));</span>
+		
+		// add the king to the stack
+<span class="fc" id="L125">		assertEquals(deckCards.get(12), testStack.push(deckCards.get(12)));</span>
+		
+		// now test can we add the same suit queen
+<span class="fc" id="L128">		assertFalse(testStack.isValidMove(deckCards.get(12)));</span>
+		
+		// now test if can add an off-suit different color queen
+<span class="fc" id="L131">		assertTrue(testStack.isValidMove(deckCards.get(37)));</span>
+		
+		// place the card to the stack
+<span class="fc" id="L134">		assertEquals(deckCards.get(37), testStack.push(deckCards.get(37)));</span>
+		
+		// add a card to the stack via add method as if being dealt
+<span class="fc" id="L137">		testStack.addCard(deckCards.get(40));</span>
+		
+		// now check if that changes what will be accepted
+<span class="fc" id="L140">		assertFalse(testStack.isValidMove(deckCards.get(41)));</span>
+<span class="fc" id="L141">	}</span>
+	
+	@Test
+	public void testColumn() {
+		
+		// create a new column
+<span class="fc" id="L147">		Column testColumn = new Column();</span>
+		
+		// test if we can place a non-king card onto the empty stack
+<span class="fc" id="L150">		assertFalse(testColumn.isValidMove(deckCards.get(1)));</span>
+		
+		// test if we can place a king onto an empty stack
+		// remember testStack starts at 0 not 1, so kings are at position 12
+<span class="fc" id="L154">		assertTrue(testColumn.isValidMove(deckCards.get(12)));</span>
+		
+		// add the king to the stack
+<span class="fc" id="L157">		assertEquals(deckCards.get(12), testColumn.push(deckCards.get(12)));</span>
+		
+		// now test can we add the same suit queen
+<span class="fc" id="L160">		assertFalse(testColumn.isValidMove(deckCards.get(12)));</span>
+		
+		// now test if can add an off-suit different color queen
+<span class="fc" id="L163">		assertTrue(testColumn.isValidMove(deckCards.get(37)));</span>
+		
+		// place the card to the stack
+<span class="fc" id="L166">		assertEquals(deckCards.get(37), testColumn.push(deckCards.get(37)));</span>
+		
+		// add a card to the stack via add method as if being dealt
+<span class="fc" id="L169">		testColumn.addCard(deckCards.get(40));</span>
+		
+		// now check if that changes what will be accepted
+<span class="fc" id="L172">		assertFalse(testColumn.isValidMove(deckCards.get(41)));</span>
+<span class="fc" id="L173">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Dec 3, 2017 1:29:15 AM)</div></body></html>

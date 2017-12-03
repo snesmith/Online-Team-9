@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DealDeck.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 3, 2017 1:29:15 AM)</a> &gt; <a href="../../index.html" class="el_group">FourRowSolitaire</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">FourRowSolitaire</a> &gt; <span class="el_source">DealDeck.java</span></div><h1>DealDeck.java</h1><pre class="source lang-java linenums">/*
+    This file is a part of Four Row Solitaire
+
+    Copyright (C) 2010 by Matt Stephen
+
+    Four Row Solitaire is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Four Row Solitaire is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with FourRowSolitaire.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package FourRowSolitaire;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.util.LinkedList;
+import javax.swing.JOptionPane;
+
+/**
+ * Class: DealDeck
+ *
+ * Description: The DealDeck class manages the leftover cards after the deal
+ * out.
+ *
+ * @author Matt Stephen
+ */
+public class DealDeck extends CardStack {
+	private DiscardPile discardPile;
+<span class="fc" id="L38">	private int numTimesThroughDeck = 1;</span>
+
+<span class="fc" id="L40">	private int drawCount = 1;</span>
+<span class="fc" id="L41">	private int difficulty = 2; // 1, 2, or 3</span>
+
+	private static final int DRAW_ONE_THROUGH_LIMIT = 2;
+	private static final int DRAW_THREE_THROUGH_LIMIT = 3;
+
+	private static final int EASY_THROUGH_LIMIT = 3; // Number of deck throughs for each difficulty
+	private static final int MEDIUM_THROUGH_LIMIT = 2; // Three card draw adds 1 to each
+	private static final int HARD_THROUGH_LIMIT = 1;
+
+	private int deckThroughLimit;
+<span class="fc" id="L51">	private boolean redealable = true;</span>
+
+<span class="fc" id="L53">	public DealDeck(DiscardPile discard, int drawCount) {</span>
+<span class="fc" id="L54">		discardPile = discard;</span>
+<span class="fc" id="L55">		this.drawCount = drawCount;</span>
+
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">		if (drawCount == 3) {</span>
+<span class="nc" id="L58">			deckThroughLimit = DRAW_THREE_THROUGH_LIMIT;</span>
+<span class="nc" id="L59">		} else {</span>
+<span class="fc" id="L60">			deckThroughLimit = DRAW_ONE_THROUGH_LIMIT;</span>
+		}
+
+<span class="fc" id="L63">		discard.setDrawCount(drawCount);</span>
+<span class="fc" id="L64">	}</span>
+
+	public void reset() {
+<span class="fc" id="L67">		numTimesThroughDeck = 1;</span>
+<span class="fc" id="L68">	}</span>
+
+	private void undone() {
+<span class="nc" id="L71">		numTimesThroughDeck--;</span>
+<span class="nc" id="L72">	}</span>
+
+	public int getDeckThroughs() {
+<span class="fc" id="L75">		return numTimesThroughDeck;</span>
+	}
+
+	public void setDeckThroughs(int throughs) {
+<span class="fc" id="L79">		numTimesThroughDeck = throughs;</span>
+<span class="fc" id="L80">	}</span>
+
+	public void setDeck(LinkedList&lt;Card&gt; cards) {
+<span class="fc bfc" id="L83" title="All 2 branches covered.">		for (int i = 0; i &lt; cards.size(); i++) {</span>
+<span class="fc" id="L84">			cards.get(i).setFaceDown();</span>
+<span class="fc" id="L85">			addCard(cards.get(i));</span>
+		}
+<span class="fc" id="L87">	}</span>
+
+	public void setDrawCount(int draw) {
+<span class="fc" id="L90">		drawCount = draw;</span>
+<span class="fc" id="L91">		discardPile.setDrawCount(draw);</span>
+
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		if (drawCount == 3) {</span>
+<span class="fc" id="L94">			deckThroughLimit = DRAW_THREE_THROUGH_LIMIT;</span>
+<span class="fc" id="L95">		} else {</span>
+<span class="fc" id="L96">			deckThroughLimit = DRAW_ONE_THROUGH_LIMIT;</span>
+		}
+<span class="fc" id="L98">	}</span>
+
+	public void setDifficulty(int difficulty) {
+<span class="fc" id="L101">		this.difficulty = difficulty;</span>
+
+<span class="fc bfc" id="L103" title="All 2 branches covered.">		if (difficulty == 1) {</span>
+<span class="fc" id="L104">			deckThroughLimit = EASY_THROUGH_LIMIT;</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">		} else if (difficulty == 3) {</span>
+<span class="fc" id="L106">			deckThroughLimit = HARD_THROUGH_LIMIT;</span>
+<span class="fc" id="L107">		} else // if(difficulty == 2)</span>
+		{
+<span class="fc" id="L109">			deckThroughLimit = MEDIUM_THROUGH_LIMIT;</span>
+		}
+
+<span class="fc bfc" id="L112" title="All 2 branches covered.">		if (drawCount == 3) {</span>
+<span class="fc" id="L113">			deckThroughLimit++; // draw three has an extra deck through on top of the single card setting</span>
+		}
+<span class="fc" id="L115">	}</span>
+
+	public boolean hasDealsLeft() {
+<span class="fc" id="L118">		return redealable;</span>
+	}
+
+	public synchronized Card pop() {
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		if (!isEmpty()) {</span>
+			// Verify there are still cards remaining
+<span class="fc bfc" id="L124" title="All 2 branches covered.">			if (drawCount == 1) {</span>
+<span class="fc" id="L125">				Card card = super.pop();</span>
+
+<span class="fc" id="L127">				card.setFaceUp();</span>
+<span class="fc" id="L128">				discardPile.push(card);</span>
+
+<span class="fc" id="L130">				this.repaint();</span>
+<span class="fc" id="L131">				return card;</span>
+			} else {
+<span class="fc" id="L133">				int tempDrawCount = drawCount;</span>
+<span class="fc" id="L134">				CardStack tempStack = new CardStack();</span>
+
+<span class="pc bpc" id="L136" title="1 of 6 branches missed.">				while (drawCount &gt; 1 &amp;&amp; tempDrawCount &gt; 0 &amp;&amp; !isEmpty()) {</span>
+<span class="fc" id="L137">					Card card = super.pop();</span>
+
+<span class="fc" id="L139">					card.setFaceUp();</span>
+<span class="fc" id="L140">					tempStack.push(card);</span>
+
+<span class="fc" id="L142">					tempDrawCount--;</span>
+				}
+
+<span class="fc" id="L145">				CardStack tempStack2 = new CardStack(); // To put the cards back in order because the previous step</span>
+														// reversed them
+
+<span class="fc bfc" id="L148" title="All 2 branches covered.">				for (int i = tempStack.length(); i &gt; 0; i--) {</span>
+<span class="fc" id="L149">					tempStack2.push(tempStack.pop());</span>
+				}
+
+<span class="fc" id="L152">				discardPile.push(tempStack2);</span>
+
+<span class="fc" id="L154">				this.repaint();</span>
+<span class="fc" id="L155">				return discardPile.peek();</span>
+			}
+<span class="fc bfc" id="L157" title="All 4 branches covered.">		} else if (!discardPile.isEmpty() &amp;&amp; numTimesThroughDeck &lt; deckThroughLimit) {</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">			for (int i = discardPile.length(); i &gt; 0; i--) {</span>
+<span class="fc" id="L159">				Card card = discardPile.pop();</span>
+<span class="fc" id="L160">				card.setFaceDown();</span>
+<span class="fc" id="L161">				card.setSource(&quot;Deck&quot;);</span>
+<span class="fc" id="L162">				push(card);</span>
+			}
+
+<span class="fc" id="L165">			discardPile.repaint();</span>
+<span class="fc" id="L166">			numTimesThroughDeck++;</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		} else if (numTimesThroughDeck &gt;= deckThroughLimit) {</span>
+<span class="fc" id="L168">			redealable = false;</span>
+<span class="fc" id="L169">			JOptionPane.showMessageDialog(null, &quot;You have reached your deck through limit.&quot;);</span>
+		}
+
+<span class="fc" id="L172">		this.repaint();</span>
+<span class="fc" id="L173">		return null;</span>
+	}
+
+	public synchronized void undoPop() {
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		while (!isEmpty()) {</span>
+<span class="nc" id="L178">			Card card = super.pop();</span>
+<span class="nc" id="L179">			card.setFaceUp();</span>
+<span class="nc" id="L180">			discardPile.push(card);</span>
+		}
+
+<span class="nc" id="L183">		undone();</span>
+
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		if (!redealable) {</span>
+<span class="nc" id="L186">			redealable = true;</span>
+		}
+
+<span class="nc" id="L189">		discardPile.repaint();</span>
+<span class="nc" id="L190">		this.repaint();</span>
+<span class="nc" id="L191">	}</span>
+
+	public Card getCardAtLocation(Point p) {
+<span class="nc" id="L194">		return peek();</span>
+	}
+
+	public boolean isValidMove(Card card) {
+<span class="nc" id="L198">		return false;</span>
+	}
+
+	public boolean isValidMove(CardStack stack) {
+<span class="nc" id="L202">		return false;</span>
+	}
+
+	public void paint(Graphics g) {
+<span class="fc" id="L206">		super.paint(g);</span>
+
+<span class="fc bfc" id="L208" title="All 2 branches covered.">		if (!isEmpty()) {</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">			for (int i = 0; i &lt; length(); i++) {</span>
+<span class="fc" id="L210">				Image image = getCardAtLocation(i).getImage();</span>
+<span class="fc" id="L211">				g.drawImage(image, 0, 0, null);</span>
+			}
+		}
+<span class="fc" id="L214">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Dec 3, 2017 1:29:15 AM)</div></body></html>

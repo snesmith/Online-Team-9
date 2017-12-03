@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FireworksDisplay.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Merged (Dec 3, 2017 1:29:15 AM)</a> &gt; <a href="../../index.html" class="el_group">FourRowSolitaire</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">FourRowSolitaire</a> &gt; <span class="el_source">FireworksDisplay.java</span></div><h1>FireworksDisplay.java</h1><pre class="source lang-java linenums">/*
+    This file is a part of Four Row Solitaire
+
+    Copyright (C) 2010 by Matt Stephen
+
+    Four Row Solitaire is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Four Row Solitaire is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with FourRowSolitaire.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package FourRowSolitaire;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.Random;
+
+/**
+ * Class: FireworksDisplay
+ * 
+ * Description: The FireworksDisplay class manages the win animation for Four
+ * Row Solitaire.
+ * 
+ * @author Matt Stephen
+ */
+public class FireworksDisplay extends JPanel implements ActionListener {
+	public final int NUM_FIREWORKS;
+	public final int FIREWORKS_SIZE;
+	public static final int SET_DELAY = 10;
+	public static final int FIREWORKS_TIME = 30;
+
+	private int[] x;;
+	private int[] y;
+	private Color[] colors;
+
+	private int[][] xx; // For firework burst
+	private int[][] yy; // For firework burst
+
+<span class="fc" id="L48">	private int num = 0;</span>
+<span class="fc" id="L49">	private int numSets = 0;</span>
+<span class="fc" id="L50">	private int startValue = 0;</span>
+
+<span class="fc" id="L52">	private Timer timer = new Timer(100, this);</span>
+<span class="fc" id="L53">	private Random random = new Random();</span>
+
+<span class="fc" id="L55">	public FireworksDisplay(int num, int size) {</span>
+<span class="fc" id="L56">		NUM_FIREWORKS = num;</span>
+<span class="fc" id="L57">		FIREWORKS_SIZE = size;</span>
+
+<span class="fc" id="L59">		x = new int[NUM_FIREWORKS];</span>
+<span class="fc" id="L60">		y = new int[NUM_FIREWORKS];</span>
+<span class="fc" id="L61">		colors = new Color[NUM_FIREWORKS];</span>
+
+<span class="fc" id="L63">		xx = new int[NUM_FIREWORKS][FIREWORKS_SIZE];</span>
+<span class="fc" id="L64">		yy = new int[NUM_FIREWORKS][FIREWORKS_SIZE];</span>
+
+<span class="fc" id="L66">		setBackground(Color.BLACK);</span>
+<span class="fc" id="L67">	}</span>
+
+	public void restartDisplay() {
+<span class="fc" id="L70">		timer.stop();</span>
+
+<span class="fc" id="L72">		num = 0;</span>
+
+<span class="fc bfc" id="L74" title="All 2 branches covered.">		for (int i = 0; i &lt; x.length; i++) {</span>
+<span class="fc" id="L75">			x[i] = (int) (Math.random() * 300) + 300;</span>
+
+<span class="fc bfc" id="L77" title="All 2 branches covered.">			for (int j = 0; j &lt; FIREWORKS_SIZE; j++) {</span>
+<span class="fc" id="L78">				int xOffset = random.nextInt(151);</span>
+<span class="fc" id="L79">				double signCheck = Math.random();</span>
+
+<span class="fc bfc" id="L81" title="All 2 branches covered.">				if (signCheck &lt;= .5) {</span>
+<span class="fc" id="L82">					xx[i][j] = -xOffset;</span>
+<span class="fc" id="L83">				} else {</span>
+<span class="fc" id="L84">					xx[i][j] = xOffset;</span>
+				}
+			}
+		}
+
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		for (int i = 0; i &lt; y.length; i++) {</span>
+<span class="fc" id="L90">			y[i] = (int) (Math.random() * 200) + 300;</span>
+
+<span class="fc bfc" id="L92" title="All 2 branches covered.">			for (int j = 0; j &lt; FIREWORKS_SIZE; j++) {</span>
+<span class="fc" id="L93">				int yOffset = random.nextInt(151);</span>
+<span class="fc" id="L94">				double signCheck = Math.random();</span>
+
+<span class="fc bfc" id="L96" title="All 2 branches covered.">				if (signCheck &lt;= .5) {</span>
+<span class="fc" id="L97">					yy[i][j] = -yOffset;</span>
+<span class="fc" id="L98">				} else {</span>
+<span class="fc" id="L99">					yy[i][j] = yOffset;</span>
+				}
+			}
+		}
+
+<span class="fc bfc" id="L104" title="All 2 branches covered.">		for (int i = 0; i &lt; colors.length; i++) {</span>
+<span class="fc" id="L105">			colors[i] = randomColor();</span>
+		}
+
+<span class="fc" id="L108">		timer.start();</span>
+<span class="fc" id="L109">	}</span>
+
+	public Color randomColor() {
+<span class="fc" id="L112">		double rand = Math.random();</span>
+
+<span class="fc bfc" id="L114" title="All 2 branches covered.">		if (rand &lt;= .1) {</span>
+<span class="fc" id="L115">			return Color.RED;</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		} else if (rand &lt;= .2) {</span>
+<span class="fc" id="L117">			return Color.BLUE;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		} else if (rand &lt;= .3) {</span>
+<span class="fc" id="L119">			return Color.YELLOW;</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">		} else if (rand &lt;= .4) {</span>
+<span class="fc" id="L121">			return Color.GREEN;</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		} else if (rand &lt;= .5) {</span>
+<span class="fc" id="L123">			return Color.ORANGE;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">		} else if (rand &lt;= .6) {</span>
+<span class="fc" id="L125">			return Color.CYAN;</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		} else if (rand &lt;= .7) {</span>
+<span class="fc" id="L127">			return Color.MAGENTA;</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">		} else if (rand &lt;= .8) {</span>
+<span class="fc" id="L129">			return Color.PINK;</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		} else if (rand &lt;= .9) {</span>
+<span class="fc" id="L131">			return Color.WHITE;</span>
+		} else {
+<span class="fc" id="L133">			return new Color(153, 50, 205);</span>
+		}
+	}
+
+	public void paint(Graphics g) {
+<span class="fc" id="L138">		super.paint(g);</span>
+
+<span class="fc" id="L140">		g.setColor(Color.BLACK);</span>
+<span class="fc" id="L141">		g.fillRect(0, 0, getWidth(), getHeight());</span>
+
+<span class="fc" id="L143">		g.setColor(Color.RED);</span>
+<span class="fc" id="L144">		g.drawString(&quot;You Win! -- Click to Close.&quot;, 340, 550);</span>
+
+		// Longer set one
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (numSets &lt; 5) {</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">			for (int i = startValue; i &lt; startValue + 2; i++) {</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">				if (num &lt; 2 * FIREWORKS_TIME / 3) {</span>
+<span class="fc" id="L150">					int x0 = 0;</span>
+<span class="fc" id="L151">					int y0 = getHeight() - (num * y[i] / (2 * FIREWORKS_TIME / 3));</span>
+
+					// Fire from left side
+<span class="fc bfc" id="L154" title="All 2 branches covered.">					if (i % 2 == 0) {</span>
+<span class="fc" id="L155">						x0 = num * x[i] / (2 * FIREWORKS_TIME / 3);</span>
+<span class="fc" id="L156">					}</span>
+					// Fire from right side
+					else {
+<span class="fc" id="L159">						x0 = getWidth() - num * x[i] / (2 * FIREWORKS_TIME / 3);</span>
+					}
+
+<span class="fc" id="L162">					g.setColor(colors[i]);</span>
+<span class="fc" id="L163">					g.drawRect(x0, y0, 5, 5);</span>
+<span class="fc" id="L164">				} else {</span>
+<span class="fc" id="L165">					num -= Math.ceil(2 * FIREWORKS_TIME / 3.0);</span>
+
+<span class="fc bfc" id="L167" title="All 2 branches covered.">					for (int j = 0; j &lt; FIREWORKS_SIZE; j++) {</span>
+<span class="fc" id="L168">						g.setColor(colors[i]);</span>
+
+<span class="fc bfc" id="L170" title="All 2 branches covered.">						if (i % 2 == 0) {</span>
+<span class="fc" id="L171">							g.drawLine(x[i], getHeight() - y[i], x[i] + (num * xx[i][j] / (NUM_FIREWORKS / 3)),</span>
+<span class="fc" id="L172">									getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));</span>
+							// g.drawRect(x[i] + (num * xx[i][j] / 10), getHeight() - (y[i] + (num *
+							// yy[i][j] / 10)), 5, 5);
+<span class="fc" id="L175">						} else {</span>
+<span class="fc" id="L176">							g.drawLine(getWidth() - x[i], getHeight() - y[i],</span>
+<span class="fc" id="L177">									getWidth() - (x[i] + num * xx[i][j] / (NUM_FIREWORKS / 3)),</span>
+<span class="fc" id="L178">									getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));</span>
+							// g.drawRect(getWidth() - (x[i] + (num * xx[i][j] / 10)), getHeight() - (y[i] +
+							// (num * yy[i][j] / 10)), 5, 5);
+						}
+
+					}
+
+<span class="fc" id="L185">					num += Math.ceil(2 * FIREWORKS_TIME / 3.0);</span>
+				}
+			}
+<span class="fc" id="L188">		}</span>
+		// Longer set two
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		else if (numSets &lt; 10) {</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">			for (int i = startValue; i &lt; startValue + 3; i++) {</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">				if (num &lt; 2 * FIREWORKS_TIME / 3) {</span>
+<span class="nc" id="L193">					int x0 = 0;</span>
+<span class="nc" id="L194">					int y0 = getHeight() - (num * y[i] / (2 * FIREWORKS_TIME / 3));</span>
+
+					// Fire from left side
+<span class="nc bnc" id="L197" title="All 2 branches missed.">					if (i % 2 == 0) {</span>
+<span class="nc" id="L198">						x0 = num * x[i] / (2 * FIREWORKS_TIME / 3);</span>
+<span class="nc" id="L199">					}</span>
+					// Fire from right side
+					else {
+<span class="nc" id="L202">						x0 = getWidth() - num * x[i] / (2 * FIREWORKS_TIME / 3);</span>
+					}
+
+<span class="nc" id="L205">					g.setColor(colors[i]);</span>
+<span class="nc" id="L206">					g.drawRect(x0, y0, 5, 5);</span>
+<span class="nc" id="L207">				} else {</span>
+<span class="nc" id="L208">					num -= Math.ceil(2 * FIREWORKS_TIME / 3.0);</span>
+
+<span class="nc bnc" id="L210" title="All 2 branches missed.">					for (int j = 0; j &lt; FIREWORKS_SIZE; j++) {</span>
+<span class="nc" id="L211">						g.setColor(colors[i]);</span>
+
+<span class="nc bnc" id="L213" title="All 2 branches missed.">						if (i % 2 == 0) {</span>
+<span class="nc" id="L214">							g.drawLine(x[i], getHeight() - y[i], x[i] + (num * xx[i][j] / (NUM_FIREWORKS / 3)),</span>
+<span class="nc" id="L215">									getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));</span>
+							// g.drawRect(x[i] + (num * xx[i][j] / 10), getHeight() - (y[i] + (num *
+							// yy[i][j] / 10)), 5, 5);
+<span class="nc" id="L218">						} else {</span>
+<span class="nc" id="L219">							g.drawLine(getWidth() - x[i], getHeight() - y[i],</span>
+<span class="nc" id="L220">									getWidth() - (x[i] + num * xx[i][j] / (NUM_FIREWORKS / 3)),</span>
+<span class="nc" id="L221">									getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));</span>
+							// g.drawRect(getWidth() - (x[i] + (num * xx[i][j] / 10)), getHeight() - (y[i] +
+							// (num * yy[i][j] / 10)), 5, 5);
+						}
+
+					}
+
+<span class="nc" id="L228">					num += Math.ceil(2 * FIREWORKS_TIME / 3.0);</span>
+				}
+			}
+<span class="nc" id="L231">		}</span>
+		// Longer set three
+<span class="nc bnc" id="L233" title="All 2 branches missed.">		else if (numSets &lt; 15) {</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">			for (int i = startValue; i &lt; startValue + 4; i++) {</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">				if (num &lt; 2 * FIREWORKS_TIME / 3) {</span>
+<span class="nc" id="L236">					int x0 = 0;</span>
+<span class="nc" id="L237">					int y0 = getHeight() - (num * y[i] / (2 * FIREWORKS_TIME / 3));</span>
+
+					// Fire from left side
+<span class="nc bnc" id="L240" title="All 2 branches missed.">					if (i % 2 == 0) {</span>
+<span class="nc" id="L241">						x0 = num * x[i] / (2 * FIREWORKS_TIME / 3);</span>
+<span class="nc" id="L242">					}</span>
+					// Fire from right side
+					else {
+<span class="nc" id="L245">						x0 = getWidth() - num * x[i] / (2 * FIREWORKS_TIME / 3);</span>
+					}
+
+<span class="nc" id="L248">					g.setColor(colors[i]);</span>
+<span class="nc" id="L249">					g.drawRect(x0, y0, 5, 5);</span>
+<span class="nc" id="L250">				} else {</span>
+<span class="nc" id="L251">					num -= Math.ceil(2 * FIREWORKS_TIME / 3.0);</span>
+
+<span class="nc bnc" id="L253" title="All 2 branches missed.">					for (int j = 0; j &lt; FIREWORKS_SIZE; j++) {</span>
+<span class="nc" id="L254">						g.setColor(colors[i]);</span>
+
+<span class="nc bnc" id="L256" title="All 2 branches missed.">						if (i % 2 == 0) {</span>
+<span class="nc" id="L257">							g.drawLine(x[i], getHeight() - y[i], x[i] + (num * xx[i][j] / (NUM_FIREWORKS / 3)),</span>
+<span class="nc" id="L258">									getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));</span>
+							// g.drawRect(x[i] + (num * xx[i][j] / 10), getHeight() - (y[i] + (num *
+							// yy[i][j] / 10)), 5, 5);
+<span class="nc" id="L261">						} else {</span>
+<span class="nc" id="L262">							g.drawLine(getWidth() - x[i], getHeight() - y[i],</span>
+<span class="nc" id="L263">									getWidth() - (x[i] + num * xx[i][j] / (NUM_FIREWORKS / 3)),</span>
+<span class="nc" id="L264">									getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));</span>
+							// g.drawRect(getWidth() - (x[i] + (num * xx[i][j] / 10)), getHeight() - (y[i] +
+							// (num * yy[i][j] / 10)), 5, 5);
+						}
+
+					}
+
+<span class="nc" id="L271">					num += Math.ceil(2 * FIREWORKS_TIME / 3.0);</span>
+				}
+			}
+<span class="nc" id="L274">		}</span>
+		// Longer set four
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		else if (numSets &lt; 20) {</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">			for (int i = startValue; i &lt; startValue + 5; i++) {</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">				if (num &lt; 2 * FIREWORKS_TIME / 3) {</span>
+<span class="nc" id="L279">					int x0 = 0;</span>
+<span class="nc" id="L280">					int y0 = getHeight() - (num * y[i] / (2 * FIREWORKS_TIME / 3));</span>
+
+					// Fire from left side
+<span class="nc bnc" id="L283" title="All 2 branches missed.">					if (i % 2 == 0) {</span>
+<span class="nc" id="L284">						x0 = num * x[i] / (2 * FIREWORKS_TIME / 3);</span>
+<span class="nc" id="L285">					}</span>
+					// Fire from right side
+					else {
+<span class="nc" id="L288">						x0 = getWidth() - num * x[i] / (2 * FIREWORKS_TIME / 3);</span>
+					}
+
+<span class="nc" id="L291">					g.setColor(colors[i]);</span>
+<span class="nc" id="L292">					g.drawRect(x0, y0, 5, 5);</span>
+<span class="nc" id="L293">				} else {</span>
+<span class="nc" id="L294">					num -= Math.ceil(2 * FIREWORKS_TIME / 3.0);</span>
+
+<span class="nc bnc" id="L296" title="All 2 branches missed.">					for (int j = 0; j &lt; FIREWORKS_SIZE; j++) {</span>
+<span class="nc" id="L297">						g.setColor(colors[i]);</span>
+
+<span class="nc bnc" id="L299" title="All 2 branches missed.">						if (i % 2 == 0) {</span>
+<span class="nc" id="L300">							g.drawLine(x[i], getHeight() - y[i], x[i] + (num * xx[i][j] / (NUM_FIREWORKS / 3)),</span>
+<span class="nc" id="L301">									getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));</span>
+							// g.drawRect(x[i] + (num * xx[i][j] / 10), getHeight() - (y[i] + (num *
+							// yy[i][j] / 10)), 5, 5);
+<span class="nc" id="L304">						} else {</span>
+<span class="nc" id="L305">							g.drawLine(getWidth() - x[i], getHeight() - y[i],</span>
+<span class="nc" id="L306">									getWidth() - (x[i] + num * xx[i][j] / (NUM_FIREWORKS / 3)),</span>
+<span class="nc" id="L307">									getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));</span>
+							// g.drawRect(getWidth() - (x[i] + (num * xx[i][j] / 10)), getHeight() - (y[i] +
+							// (num * yy[i][j] / 10)), 5, 5);
+						}
+
+					}
+
+<span class="nc" id="L314">					num += Math.ceil(2 * FIREWORKS_TIME / 3.0);</span>
+				}
+			}
+<span class="nc" id="L317">		}</span>
+		// Longer set five
+<span class="nc bnc" id="L319" title="All 2 branches missed.">		else if (numSets &lt; 25) {</span>
+<span class="nc bnc" id="L320" title="All 2 branches missed.">			for (int i = startValue; i &lt; startValue + 10; i++) {</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">				if (num &lt; 2 * FIREWORKS_TIME / 3) {</span>
+<span class="nc" id="L322">					int x0 = 0;</span>
+<span class="nc" id="L323">					int y0 = getHeight() - (num * y[i] / (2 * FIREWORKS_TIME / 3));</span>
+
+					// Fire from left side
+<span class="nc bnc" id="L326" title="All 2 branches missed.">					if (i % 2 == 0) {</span>
+<span class="nc" id="L327">						x0 = num * x[i] / (2 * FIREWORKS_TIME / 3);</span>
+<span class="nc" id="L328">					}</span>
+					// Fire from right side
+					else {
+<span class="nc" id="L331">						x0 = getWidth() - num * x[i] / (2 * FIREWORKS_TIME / 3);</span>
+					}
+
+<span class="nc" id="L334">					g.setColor(colors[i]);</span>
+<span class="nc" id="L335">					g.drawRect(x0, y0, 5, 5);</span>
+<span class="nc" id="L336">				} else {</span>
+<span class="nc" id="L337">					num -= Math.ceil(2 * FIREWORKS_TIME / 3.0);</span>
+
+<span class="nc bnc" id="L339" title="All 2 branches missed.">					for (int j = 0; j &lt; FIREWORKS_SIZE; j++) {</span>
+<span class="nc" id="L340">						g.setColor(colors[i]);</span>
+
+<span class="nc bnc" id="L342" title="All 2 branches missed.">						if (i % 2 == 0) {</span>
+<span class="nc" id="L343">							g.drawLine(x[i], getHeight() - y[i], x[i] + (num * xx[i][j] / (NUM_FIREWORKS / 3)),</span>
+<span class="nc" id="L344">									getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));</span>
+							// g.drawRect(x[i] + (num * xx[i][j] / 10), getHeight() - (y[i] + (num *
+							// yy[i][j] / 10)), 5, 5);
+<span class="nc" id="L347">						} else {</span>
+<span class="nc" id="L348">							g.drawLine(getWidth() - x[i], getHeight() - y[i],</span>
+<span class="nc" id="L349">									getWidth() - (x[i] + num * xx[i][j] / (NUM_FIREWORKS / 3)),</span>
+<span class="nc" id="L350">									getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));</span>
+							// g.drawRect(getWidth() - (x[i] + (num * xx[i][j] / 10)), getHeight() - (y[i] +
+							// (num * yy[i][j] / 10)), 5, 5);
+						}
+
+					}
+
+<span class="nc" id="L357">					num += Math.ceil(2 * FIREWORKS_TIME / 3.0);</span>
+				}
+			}
+<span class="nc" id="L360">		}</span>
+		// Longer set six (finale)
+<span class="nc bnc" id="L362" title="All 2 branches missed.">		else if (numSets &lt; 26) {</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">			for (int i = startValue; i &lt; x.length; i++) {</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">				if (num &lt; 2 * FIREWORKS_TIME / 3) {</span>
+<span class="nc" id="L365">					int x0 = 0;</span>
+<span class="nc" id="L366">					int y0 = getHeight() - (num * y[i] / (2 * FIREWORKS_TIME / 3));</span>
+
+					// Fire from left side
+<span class="nc bnc" id="L369" title="All 2 branches missed.">					if (i % 2 == 0) {</span>
+<span class="nc" id="L370">						x0 = num * x[i] / (2 * FIREWORKS_TIME / 3);</span>
+<span class="nc" id="L371">					}</span>
+					// Fire from right side
+					else {
+<span class="nc" id="L374">						x0 = getWidth() - num * x[i] / (2 * FIREWORKS_TIME / 3);</span>
+					}
+
+<span class="nc" id="L377">					g.setColor(colors[i]);</span>
+<span class="nc" id="L378">					g.drawRect(x0, y0, 5, 5);</span>
+<span class="nc" id="L379">				} else {</span>
+<span class="nc" id="L380">					num -= Math.ceil(2 * FIREWORKS_TIME / 3.0);</span>
+
+<span class="nc bnc" id="L382" title="All 2 branches missed.">					for (int j = 0; j &lt; FIREWORKS_SIZE; j++) {</span>
+<span class="nc" id="L383">						g.setColor(colors[i]);</span>
+
+<span class="nc bnc" id="L385" title="All 2 branches missed.">						if (i % 2 == 0) {</span>
+<span class="nc" id="L386">							g.drawLine(x[i], getHeight() - y[i], x[i] + (num * xx[i][j] / (NUM_FIREWORKS / 3)),</span>
+<span class="nc" id="L387">									getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));</span>
+							// g.drawRect(x[i] + (num * xx[i][j] / 10), getHeight() - (y[i] + (num *
+							// yy[i][j] / 10)), 5, 5);
+<span class="nc" id="L390">						} else {</span>
+<span class="nc" id="L391">							g.drawLine(getWidth() - x[i], getHeight() - y[i],</span>
+<span class="nc" id="L392">									getWidth() - (x[i] + num * xx[i][j] / (NUM_FIREWORKS / 3)),</span>
+<span class="nc" id="L393">									getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));</span>
+							// g.drawRect(getWidth() - (x[i] + (num * xx[i][j] / 10)), getHeight() - (y[i] +
+							// (num * yy[i][j] / 10)), 5, 5);
+						}
+
+					}
+
+<span class="nc" id="L400">					num += Math.ceil(2 * FIREWORKS_TIME / 3.0);</span>
+				}
+			}
+		}
+
+		// Shorter sets
+		/*
+		 * //Set one if(num &lt;= FIREWORKS_TIME) { for(int i = 0; i &lt;
+		 * Math.ceil(NUM_FIREWORKS / 16.0); i++) { if(num &lt; 2 * FIREWORKS_TIME / 3) {
+		 * int x0 = 0; int y0 = getHeight() - (num * y[i] / (2 * FIREWORKS_TIME / 3));
+		 * 
+		 * //Fire from left side if(i%2 == 0) { x0 = num * x[i] / (2 * FIREWORKS_TIME /
+		 * 3); } //Fire from right side else { x0 = getWidth() - num * x[i] / (2 *
+		 * FIREWORKS_TIME / 3); }
+		 * 
+		 * g.setColor(colors[i]); g.drawRect(x0, y0, 5, 5); } else { num -= Math.ceil(2
+		 * * FIREWORKS_TIME / 3.0);
+		 * 
+		 * for(int j = 0; j &lt; FIREWORKS_SIZE; j++) { g.setColor(colors[i]);
+		 * 
+		 * if(i%2 == 0) { g.drawLine(x[i], getHeight() - y[i], x[i] + (num * xx[i][j] /
+		 * (NUM_FIREWORKS / 3)), getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS
+		 * / 3)))); //g.drawRect(x[i] + (num * xx[i][j] / 10), getHeight() - (y[i] +
+		 * (num * yy[i][j] / 10)), 5, 5); } else { g.drawLine(getWidth() - x[i],
+		 * getHeight() - y[i], getWidth() - (x[i] + num * xx[i][j] / (NUM_FIREWORKS /
+		 * 3)), getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));
+		 * //g.drawRect(getWidth() - (x[i] + (num * xx[i][j] / 10)), getHeight() - (y[i]
+		 * + (num * yy[i][j] / 10)), 5, 5); }
+		 * 
+		 * }
+		 * 
+		 * num += Math.ceil(2 * FIREWORKS_TIME / 3.0); } } } //Set two else if(num &gt;
+		 * (FIREWORKS_TIME + SET_DELAY) &amp;&amp; num &lt;= (2 * FIREWORKS_TIME + SET_DELAY)) {
+		 * num -= (FIREWORKS_TIME + SET_DELAY);
+		 * 
+		 * for(int i = (int)Math.ceil(NUM_FIREWORKS / 16.0); i &lt; Math.ceil(NUM_FIREWORKS
+		 * / 8.0); i++) { if(num &lt; 2 * FIREWORKS_TIME / 3) { int x0 = 0; int y0 =
+		 * getHeight() - (num * y[i] / (2 * FIREWORKS_TIME / 3));
+		 * 
+		 * //Fire from left side if(i%2 == 0) { x0 = num * x[i] / (2 * FIREWORKS_TIME /
+		 * 3); } //Fire from right side else { x0 = getWidth() - num * x[i] / (2 *
+		 * FIREWORKS_TIME / 3); }
+		 * 
+		 * g.setColor(colors[i]); g.drawRect(x0, y0, 5, 5); } else { num -= Math.ceil(2
+		 * * FIREWORKS_TIME / 3.0);
+		 * 
+		 * for(int j = 0; j &lt; FIREWORKS_SIZE; j++) { g.setColor(colors[i]);
+		 * 
+		 * if(i%2 == 0) { g.drawLine(x[i], getHeight() - y[i], x[i] + (num * xx[i][j] /
+		 * (NUM_FIREWORKS / 3)), getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS
+		 * / 3)))); //g.drawRect(x[i] + (num * xx[i][j] / 10), getHeight() - (y[i] +
+		 * (num * yy[i][j] / 10)), 5, 5); } else { g.drawLine(getWidth() - x[i],
+		 * getHeight() - y[i], getWidth() - (x[i] + num * xx[i][j] / (NUM_FIREWORKS /
+		 * 3)), getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));
+		 * //g.drawRect(getWidth() - (x[i] + (num * xx[i][j] / 10)), getHeight() - (y[i]
+		 * + (num * yy[i][j] / 10)), 5, 5); }
+		 * 
+		 * }
+		 * 
+		 * num += Math.ceil(2 * FIREWORKS_TIME / 3.0); } }
+		 * 
+		 * num += (FIREWORKS_TIME + SET_DELAY); } //Set three else if(num &gt; (2 *
+		 * FIREWORKS_TIME + 2 * SET_DELAY) &amp;&amp; num &lt;= (3 * FIREWORKS_TIME + 2 *
+		 * SET_DELAY)) { num -= (2 * FIREWORKS_TIME + 2 * SET_DELAY);
+		 * 
+		 * for(int i = (int)Math.ceil(NUM_FIREWORKS / 8.0); i &lt; Math.ceil(NUM_FIREWORKS
+		 * / 4.0); i++) { if(num &lt; 2 * FIREWORKS_TIME / 3) { int x0 = 0; int y0 =
+		 * getHeight() - (num * y[i] / (2 * FIREWORKS_TIME / 3));
+		 * 
+		 * //Fire from left side if(i%2 == 0) { x0 = num * x[i] / (2 * FIREWORKS_TIME /
+		 * 3); } //Fire from right side else { x0 = getWidth() - num * x[i] / (2 *
+		 * FIREWORKS_TIME / 3); }
+		 * 
+		 * g.setColor(colors[i]); g.drawRect(x0, y0, 5, 5); } else { num -= Math.ceil(2
+		 * * FIREWORKS_TIME / 3.0);
+		 * 
+		 * for(int j = 0; j &lt; FIREWORKS_SIZE; j++) { g.setColor(colors[i]);
+		 * 
+		 * if(i%2 == 0) { g.drawLine(x[i], getHeight() - y[i], x[i] + (num * xx[i][j] /
+		 * (NUM_FIREWORKS / 3)), getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS
+		 * / 3)))); //g.drawRect(x[i] + (num * xx[i][j] / 10), getHeight() - (y[i] +
+		 * (num * yy[i][j] / 10)), 5, 5); } else { g.drawLine(getWidth() - x[i],
+		 * getHeight() - y[i], getWidth() - (x[i] + num * xx[i][j] / (NUM_FIREWORKS /
+		 * 3)), getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));
+		 * //g.drawRect(getWidth() - (x[i] + (num * xx[i][j] / 10)), getHeight() - (y[i]
+		 * + (num * yy[i][j] / 10)), 5, 5); }
+		 * 
+		 * }
+		 * 
+		 * num += Math.ceil(2 * FIREWORKS_TIME / 3.0); } }
+		 * 
+		 * num += (2 * FIREWORKS_TIME + 2 * SET_DELAY); } //Set four else if(num &gt; (3 *
+		 * FIREWORKS_TIME + 3 * SET_DELAY) &amp;&amp; num &lt;= (4 * FIREWORKS_TIME + 3 *
+		 * SET_DELAY)) { num -= (3 * FIREWORKS_TIME + 3 * SET_DELAY);
+		 * 
+		 * for(int i = (int)Math.ceil(NUM_FIREWORKS / 4.0); i &lt; Math.ceil(NUM_FIREWORKS
+		 * / 2.0); i++) { if(num &lt; 2 * FIREWORKS_TIME / 3) { int x0 = 0; int y0 =
+		 * getHeight() - (num * y[i] / (2 * FIREWORKS_TIME / 3));
+		 * 
+		 * //Fire from left side if(i%2 == 0) { x0 = num * x[i] / (2 * FIREWORKS_TIME /
+		 * 3); } //Fire from right side else { x0 = getWidth() - num * x[i] / (2 *
+		 * FIREWORKS_TIME / 3); }
+		 * 
+		 * g.setColor(colors[i]); g.drawRect(x0, y0, 5, 5); } else { num -= Math.ceil(2
+		 * * FIREWORKS_TIME / 3.0);
+		 * 
+		 * for(int j = 0; j &lt; FIREWORKS_SIZE; j++) { g.setColor(colors[i]);
+		 * 
+		 * if(i%2 == 0) { g.drawLine(x[i], getHeight() - y[i], x[i] + (num * xx[i][j] /
+		 * (NUM_FIREWORKS / 3)), getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS
+		 * / 3)))); //g.drawRect(x[i] + (num * xx[i][j] / 10), getHeight() - (y[i] +
+		 * (num * yy[i][j] / 10)), 5, 5); } else { g.drawLine(getWidth() - x[i],
+		 * getHeight() - y[i], getWidth() - (x[i] + num * xx[i][j] / (NUM_FIREWORKS /
+		 * 3)), getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));
+		 * //g.drawRect(getWidth() - (x[i] + (num * xx[i][j] / 10)), getHeight() - (y[i]
+		 * + (num * yy[i][j] / 10)), 5, 5); }
+		 * 
+		 * }
+		 * 
+		 * num += Math.ceil(2 * FIREWORKS_TIME / 3.0); } }
+		 * 
+		 * num += (3 * FIREWORKS_TIME + 3 * SET_DELAY); } //Set five (finale) else { num
+		 * -= (4 * FIREWORKS_TIME + 4 * SET_DELAY);
+		 * 
+		 * for(int i = (int)Math.ceil(NUM_FIREWORKS / 2.0); i &lt; NUM_FIREWORKS; i++) {
+		 * if(num &lt; 2 * FIREWORKS_TIME / 3) { int x0 = 0; int y0 = getHeight() - (num *
+		 * y[i] / (2 * FIREWORKS_TIME / 3));
+		 * 
+		 * //Fire from left side if(i%2 == 0) { x0 = num * x[i] / (2 * FIREWORKS_TIME /
+		 * 3); } //Fire from right side else { x0 = getWidth() - num * x[i] / (2 *
+		 * FIREWORKS_TIME / 3); }
+		 * 
+		 * g.setColor(colors[i]); g.drawRect(x0, y0, 5, 5); } else { num -= Math.ceil(2
+		 * * FIREWORKS_TIME / 3.0);
+		 * 
+		 * for(int j = 0; j &lt; FIREWORKS_SIZE; j++) { g.setColor(colors[i]);
+		 * 
+		 * if(i%2 == 0) { g.drawLine(x[i], getHeight() - y[i], x[i] + (num * xx[i][j] /
+		 * (NUM_FIREWORKS / 3)), getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS
+		 * / 3)))); //g.drawRect(x[i] + (num * xx[i][j] / 10), getHeight() - (y[i] +
+		 * (num * yy[i][j] / 10)), 5, 5); } else { g.drawLine(getWidth() - x[i],
+		 * getHeight() - y[i], getWidth() - (x[i] + num * xx[i][j] / (NUM_FIREWORKS /
+		 * 3)), getHeight() - (y[i] + (num * yy[i][j] / (NUM_FIREWORKS / 3))));
+		 * //g.drawRect(getWidth() - (x[i] + (num * xx[i][j] / 10)), getHeight() - (y[i]
+		 * + (num * yy[i][j] / 10)), 5, 5); }
+		 * 
+		 * }
+		 * 
+		 * num += Math.ceil(2 * FIREWORKS_TIME / 3.0); } }
+		 * 
+		 * num += (4 * FIREWORKS_TIME + 4 * SET_DELAY); }
+		 */
+<span class="fc" id="L552">	}</span>
+
+	public void actionPerformed(ActionEvent e) {
+<span class="pc bpc" id="L555" title="1 of 2 branches missed.">		if (e.getSource() == timer) {</span>
+<span class="fc bfc" id="L556" title="All 2 branches covered.">			if (num &gt;= FIREWORKS_TIME) {</span>
+<span class="fc" id="L557">				num = 0;</span>
+<span class="fc" id="L558">				numSets++;</span>
+
+<span class="fc" id="L560">				startValue = random.nextInt(x.length / 2);</span>
+			}
+
+<span class="fc" id="L563">			num++;</span>
+
+<span class="fc bfc" id="L565" title="All 2 branches covered.">			if (numSets &gt;= 26) {</span>
+<span class="fc" id="L566">				timer.stop();</span>
+<span class="fc" id="L567">			} else {</span>
+<span class="fc" id="L568">				repaint();</span>
+			}
+
+			// Shorter sets
+			/*
+			 * num++;
+			 * 
+			 * if(num &gt; 5 * FIREWORKS_TIME + 4 * SET_DELAY) { timer.stop(); }
+			 * 
+			 * repaint();
+			 */
+		}
+<span class="fc" id="L580">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>Merged (Dec 3, 2017 1:29:15 AM)</div></body></html>
