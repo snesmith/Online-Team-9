@@ -553,7 +553,10 @@ public class FourRowSolitaire extends SolitaireBoard implements ActionListener {
 					+ "   -Cards may be removed from the Ace piles and placed back onto the playing field\n"
 					+ "   -Any number of cards can be moved in one move (as long as they are stacked as in Solitaire\n"
 					+ "\nFeatures unique to this game:\n" + "   -The four individual cells start with cards in them\n"
-					+ "   -You may only go through the deck twice on draw one and three times on draw three\n"
+					+ "   -The difficulty determines how many times you can go through the deck\n"
+					+ "       -Easy: Three Times\n"
+					+ "       -Medium: Twice\n"
+					+ "       -Hard: Once"
 					+ "   -The obvious: there are only four columns, not 7 or 8 as in Solitaire and FreeCell, respectively",
 					"Help!", JOptionPane.INFORMATION_MESSAGE);
 		} else if (e.getSource() == about) {
