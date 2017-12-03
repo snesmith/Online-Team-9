@@ -27,7 +27,8 @@ import java.awt.Point;
  * Description: The SingleCell class manages an individual cell that can only
  * hold one card.
  *
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class SingleCell extends CardStack {
 	public SingleCell() {

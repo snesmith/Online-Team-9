@@ -28,7 +28,8 @@ import javax.swing.*;
  *
  * Description: The Solitaire Panel is the main playing field view.
  *
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class SolitairePanel extends JPanel {
 	private int backgroundNumber = 2;

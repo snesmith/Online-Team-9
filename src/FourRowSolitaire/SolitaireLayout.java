@@ -27,7 +27,8 @@ import java.awt.*;
  * Description: The SolitaireLayout class manages the layout for the Solitaire
  * board.
  *
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class SolitaireLayout implements LayoutManager {
 	public static final String COLUMN_ONE = "Column One";
@@ -38,7 +39,7 @@ public class SolitaireLayout implements LayoutManager {
 	public static final String SPADES_ACE_PILE = "Spaces Ace Pile";
 	public static final String CLUBS_ACE_PILE = "Clubs Ace Pile";
 	public static final String DIAMONDS_ACE_PILE = "Diamonds Ace Pile";
-	public static final String HEARTS_ACE_PILE = "Hears Ace Pile";
+	public static final String HEARTS_ACE_PILE = "Hearts Ace Pile";
 
 	public static final String DISCARD_PILE = "Discard Pile";
 	public static final String DECK = "Deck";

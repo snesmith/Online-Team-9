@@ -33,7 +33,8 @@ import javax.swing.event.MouseInputAdapter;
  * 
  * Description: The WinScreen class manages the win animation and sounds window.
  * 
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class WinScreen extends JFrame {
 	SoundThread sound = null;

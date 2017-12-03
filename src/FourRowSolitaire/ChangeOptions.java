@@ -30,7 +30,8 @@ import javax.swing.border.TitledBorder;
  * Description: The ChangeOptions class manages several game options, such as
  * the draw count (1 or 3).
  * 
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class ChangeOptions extends JDialog implements ActionListener {
 	private int drawCount = 1;

@@ -30,7 +30,8 @@ import java.util.Random;
  * Description: The FireworksDisplay class manages the win animation for Four
  * Row Solitaire.
  * 
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class FireworksDisplay extends JPanel implements ActionListener {
 	public final int NUM_FIREWORKS;

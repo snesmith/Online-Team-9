@@ -29,7 +29,8 @@ import javax.swing.*;
  * Description: The ChangeAppearance class manages the ability to change the
  * background or card backs.
  * 
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class ChangeAppearance extends JDialog implements ActionListener {
 	public static final int NUM_DECKS = 3;

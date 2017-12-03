@@ -28,7 +28,8 @@ import javax.swing.JLayeredPane;
  *
  * Description: The Cardstack class manages a location for cards to be placed.
  *
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class CardStack extends JLayeredPane {
 	private Vector<Card> cards = new Vector<Card>();

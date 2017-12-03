@@ -31,7 +31,8 @@ import javax.swing.JOptionPane;
  * Description: The DealDeck class manages the leftover cards after the deal
  * out.
  *
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class DealDeck extends CardStack {
 	private DiscardPile discardPile;

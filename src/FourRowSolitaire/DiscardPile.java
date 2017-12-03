@@ -29,7 +29,8 @@ import java.awt.Point;
  * Description: The DiscardPile class manages the stack of Cards discarded from
  * the deck.
  *
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class DiscardPile extends CardStack {
 	private int drawCount = 1;

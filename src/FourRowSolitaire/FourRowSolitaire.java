@@ -33,7 +33,8 @@ import javax.swing.*;
  * Description: The FourRowSolitaire class adds a menu to the SolitaireBoard
  * Frame.
  * 
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class FourRowSolitaire extends SolitaireBoard implements ActionListener {
 	public static final String version = ".40";

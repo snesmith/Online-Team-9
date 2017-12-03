@@ -27,7 +27,8 @@ import java.util.Random;
  *
  * Description: The Deck class holds all the Cards to form a 52 card deck.
  *
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class Deck {
 	// flag to indicate playtest

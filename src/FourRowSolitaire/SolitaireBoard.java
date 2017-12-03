@@ -31,7 +31,8 @@ import javax.swing.event.MouseInputAdapter;
  *
  * Description: The SolitaireBoard class manages the entire playing field.
  *
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class SolitaireBoard extends JFrame {
 	public static final int GAME_WON = 0;

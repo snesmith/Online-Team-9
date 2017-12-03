@@ -28,7 +28,8 @@ import java.awt.Point;
  *
  * Description: The AcePile class manages one of the four foundation stacks.
  *
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class AcePile extends CardStack {
 	private String suit;

@@ -24,7 +24,8 @@ package FourRowSolitaire;
  *
  * Description: The Column class manages a single column on the board.
  *
- * @author Matt Stephen
+ * @author Matt Stephen, Shawn Weiner, Steven Nesmith, Curtis Galluzzo
+ * 
  */
 public class Column extends CardStack {
 	public Column() {
